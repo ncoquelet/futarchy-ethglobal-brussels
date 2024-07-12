@@ -1,0 +1,13 @@
+.vscode
+node_modules
+
+artifacts
+cache
+typechain-types
+
+coverage
+coverage.json
+
+# foundry
+out
+.env

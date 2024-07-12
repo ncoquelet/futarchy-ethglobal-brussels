@@ -1,0 +1,62 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+    {
+      "type": "hardhat",
+      "task": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "label": "Tests Hardhat",
+      "detail": "Run hardhat tests"
+    },
+    {
+      "type": "npm",
+      "script": "node",
+      "path": "backend",
+      "problemMatcher": [],
+      "label": "Node Hardhat",
+      "detail": "npx hardhat node",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "icon": {
+        "id": "database"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "simulate",
+      "path": "backend",
+      "problemMatcher": [],
+      "label": "Simulate RobinWood",
+      "detail": "npx hardhat run scripts/simulation.ts --network localhost"
+    },
+    {
+      "type": "npm",
+      "script": "dev",
+      "path": "frontend",
+      "problemMatcher": [],
+      "label": "Next Dev",
+      "detail": "next dev",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "icon": {
+        "id": "server"
+      }
+    }
+  ]
+}

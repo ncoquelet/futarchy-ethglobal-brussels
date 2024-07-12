@@ -1,0 +1,10 @@
+[profile.default]
+src = "contracts"
+script = 'scripts/foundry'
+test = 'test/foundry'
+out = "out"
+libs = ["lib"]
+cache_path  = 'cache/foundry'
+
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

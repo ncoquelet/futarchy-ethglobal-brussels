@@ -1,0 +1,19 @@
+{
+  "name": "futarchy-ethglobal-brussels",
+  "version": "0.1.0",
+  "private": true,
+  "description": "desc",
+  "author": "https://ethglobal.com/events/brussels/team?code=untzh",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ncoquelet/futarchy-ethglobal-brussels.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ncoquelet/futarchy-ethglobal-brussels/issues"
+  },
+  "homepage": "https://github.com/ncoquelet/futarchy-ethglobal-brussels#readme",
+  "engines": {
+    "node": ">=18.18.2"
+  }
+}
