@@ -1,21 +1,28 @@
 # Futarchy ETHGlobal Brussels
 
-## Contract Specs
+## Install
 
-### FutarchyGovernance
+1. Clone this repo by running `git clone https://github.com/ncoquelet/futarchy-ethglobal-brussels`
+2. `cd futarchy-ethglobal-brussels/backend`
+3. `npm install`
+4. Run `npx hardhat compile` to test installation
 
-Contrat principal qui représente la DAO Futarchy.
+## Tests
 
-Ses responsabilités seront de :
-- pouvoir créer de nouvelles propositions.
-- lister les propositions existantes
+Run `npx hardhat test` to execute test suite
 
+## Start a local node
 
-### FutarchyProposal
+run `npx hardhat node`
 
-Contrat représentant une proposition.
+## Deployement scripts
 
-Une proposition sera définie par :
-- une description
-- une date d'échéance
--  
+### Localhost
+
+run `npx hardhat run scripts/deploy.ts --network localhost` to deploy the contract manually
+
+### Sepolia
+
+run `HARDHAT_ENV=production npx hardhat run scripts/deploy.ts --network sepolia` to deploy the contract manually
+
+## Simulation
