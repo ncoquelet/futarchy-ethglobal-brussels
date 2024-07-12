@@ -1,8 +1,6 @@
-import '@nomicfoundation/hardhat-ignition'
 import '@nomicfoundation/hardhat-toolbox'
 import '@nomicfoundation/hardhat-verify'
 import { HardhatUserConfig } from 'hardhat/config'
-import 'solidity-docgen'
 
 const { ACCOUNT0, ALCHEMY_SEPOLIA_RPC_URL, ALCHEMY_KEY, ETHERSCAN_API_KEY } =
   process.env
