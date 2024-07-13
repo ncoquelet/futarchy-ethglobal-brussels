@@ -42,9 +42,20 @@ export default function Home() {
             proposals={proposals}
           />
       </Link>
-      <h2><Link href="/goal-overview">goal 1</Link></h2>
-      <h2><Link href="/goal-overview">goal 2</Link></h2>
-      <h2><Link href="/goal-overview">goal 3</Link></h2>
+      <Link href="/goal-overview">
+          <ProposalCard
+            title="Title Title Title Title Title Title Title Title Title Title Title ?"
+            tradingPeriod="05.07.2024 ~ 05.08.2024"
+            proposals={proposals}
+          />
+      </Link>
+      <Link href="/goal-overview">
+          <ProposalCard
+            title="Title Title Title Title Title Title Title Title Title Title Title ?"
+            tradingPeriod="05.07.2024 ~ 05.08.2024"
+            proposals={proposals}
+          />
+      </Link>
     </main>
   );
 }
