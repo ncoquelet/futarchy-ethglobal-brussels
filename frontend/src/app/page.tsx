@@ -8,9 +8,9 @@ import { Button, ButtonGroup } from '@chakra-ui/react'
 
 export default function Home() {
   const proposals = [
-    "{Proposal title Proposal title Proposal title Proposal title }",
-    "{Proposal title Proposal title Proposal title Proposal title }",
-    "{Proposal title Proposal title Proposal title Proposal title }"
+    "{Proposal title Proposal title Proposal title Proposal title}",
+    "{Proposal title Proposal title Proposal title Proposal title}",
+    "{Proposal title Proposal title Proposal title Proposal title}"
   ];
   return (
 

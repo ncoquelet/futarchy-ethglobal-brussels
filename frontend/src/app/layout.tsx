@@ -6,10 +6,10 @@ import { Inter } from "next/font/google";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 // Wagmi & RainbowKit
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { ConnectButton, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { hardhat, polygonMumbai, sepolia } from "@wagmi/core/chains";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { useConnect, useAccount , configureChains, createConfig, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -66,18 +66,18 @@ export default function RootLayout({
                       <div className="header">
                         <div style={{display: 'flex'}}>
                           <div>
-                          <Button colorScheme='blue' size='sm'>Home</Button>
+                            <Button colorScheme='blue' size='sm'>Home</Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
-                          <Button colorScheme='blue' size='sm'>Profile</Button>
+                            <Button colorScheme='blue' size='sm'>Profile</Button>
                           </div>
                         </div>
                         <div style={{display: 'flex'}}>
                           <div>
-                          <Button colorScheme='blue' size='sm'>Sign up</Button>
+                            <Button colorScheme='blue' size='sm'>Sign up</Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
-                          <Button colorScheme='blue' size='sm' variant='outline'>Connect Wallet</Button>
+                            <ConnectButton />
                           </div>
                         </div>
                       </div>
