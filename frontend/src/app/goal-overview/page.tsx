@@ -11,8 +11,10 @@ import { Button, ButtonGroup } from '@chakra-ui/react'
 
 export default function GoalOverview() {
 
-  const router = useRouter();
-  const goalId = router.query.goalId;
+  // const router = useRouter();
+  // const goalAddress = router.query.goalAddress;
+
+  //TODO: GET the goal metadata given the addresses
 
   const goal = {
     id: 'id1', 
@@ -27,6 +29,25 @@ export default function GoalOverview() {
     ],
     overview: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?'
   }
+
+  const proposalList = goal.proposals.map((proposal, index) => 
+    <div className="proposal-card" key={proposal.title}>  
+      <p>Proposal {index+1}</p>
+      <h2>{proposal.title}</h2>
+      <div style={{display: 'flex;'}}>
+        <div style={{width: '50%', margin: '1rem' }}>
+          YES
+        </div>
+        <div style={{width: '50%', margin: '1rem' }}>
+          NO
+        </div>
+      </div>
+      <div></div>
+      <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
+        13 ETH is staked in the pool
+      </div>
+    </div>
+    );
 
   return (
     <div className="font-satoshi">
@@ -68,54 +89,7 @@ export default function GoalOverview() {
           <h2 style={{color: 'white', paddingBottom: '2rem'}}>Time to vote to proposals!</h2>
         </div>
         <div className="proposal-card-list">
-          <div className="proposal-card">
-            <p>Proposal 1</p>
-            <h2>Increase bike lanes</h2>
-            <div style={{display: 'flex;'}}>
-              <div style={{width: '50%', margin: '1rem' }}>
-                YES
-              </div>
-              <div style={{width: '50%', margin: '1rem' }}>
-                NO
-              </div>
-            </div>
-            <div></div>
-            <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
-              13 ETH is staked in the pool
-            </div>
-          </div>
-          <div className="proposal-card inactive-card">
-            <p>Proposal 2</p>
-            <h2>Increase bike lanes</h2>
-            <div style={{display: 'flex;'}}>
-              <div style={{width: '50%', margin: '1rem' }}>
-                YES
-              </div>
-              <div style={{width: '50%', margin: '1rem' }}>
-                NO
-              </div>
-            </div>
-            <div></div>
-            <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
-              13 ETH is staked in the pool
-            </div>
-          </div>
-          <div className="proposal-card inactive-card">
-            <p>Proposal 3</p>
-            <h2>Increase bike lanes</h2>
-            <div style={{display: 'flex;'}}>
-              <div style={{width: '50%', margin: '1rem'}}>
-                YES
-              </div>
-              <div style={{width: '50%', margin: '1rem'}}>
-                NO
-              </div>
-            </div>
-            <div></div>
-            <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
-              13 ETH is staked in the pool
-            </div>
-          </div>
+          {proposalList}
         </div>
       </div>
     </div>
