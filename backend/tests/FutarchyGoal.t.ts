@@ -57,7 +57,7 @@ describe('Futarchy Goal', () => {
       await goal.connect(owner).createProposal('desc');
       await expect(
         goal.connect(owner).cancelCurrentProposal()
-      ).to.be.revertedWith('Time for voting proposal is not over')
+      ).to.be.revertedWith('Time is not over')
     })
 
     it('should cancel a proposal if deadline is reached', async () => {
