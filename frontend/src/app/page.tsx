@@ -19,7 +19,14 @@ export default function Home() {
             <Button colorScheme='blue' size='sm'>Test your goal</Button>
           </div>
         </div>
-        
+        <div style={{display: 'flex', alignItems: 'flex-end'}}>
+        <Image
+          src="/sunset.png"
+          width={300}
+          height={300}
+          alt="Picture of a sunset"
+        />
+        </div>
       </div>
       <h1>List of goals</h1>
       <h2><Link href="/goal-overview">goal 1</Link></h2>

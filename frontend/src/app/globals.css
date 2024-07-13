@@ -35,12 +35,11 @@
 }
 
 .hero {
-  /* background-color: #25262A; */
   padding-top: 2rem;
-  padding-bottom: 2rem;
   padding-left: 4rem;
   padding-right: 4rem;
-  background-image: url(/hero.png);
+  display: flex;
+  justify-content: space-between;
 }
 
 .hero-text {
