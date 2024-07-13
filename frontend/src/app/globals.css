@@ -40,11 +40,6 @@
   justify-content: space-between;
 }
 
-.hero-text {
-  color: white;
-  margin-bottom: 6rem;
-}
-
 .section {
   padding-top: 2rem;
   padding-left: 8rem;
@@ -60,6 +55,35 @@
   margin-right: 1.5rem;
   margin-top: 1rem;
   max-width: 20rem;
+}
+
+.greyCard{
+  background-color: #E2E8F0;
+  border-radius: 10px;
+}
+
+h1 {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+h3 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+h4 {
+  font-size: 0.5rem;
+  font-weight: bold;
+  margin-bottom: 0.15rem;
 }
 
 @font-face {
