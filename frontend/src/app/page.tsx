@@ -13,11 +13,12 @@ export default function Home() {
     "{Proposal title Proposal title Proposal title Proposal title }"
   ];
   return (
-    <main>
+
+    <main className="p-4 font-satoshi">
       <div className="hero" style={{ display: 'flex', justifyContent: 'space-between'}}>
         <div>
           <div>
-            <h1 className="hero-text">
+          <h1 className="hero-text font-satoshi text-4xl font-bold mb-4">
               Drop your goal and test it with community 
             </h1>
           </div>
