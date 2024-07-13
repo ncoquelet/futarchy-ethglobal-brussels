@@ -6,7 +6,7 @@ import {FutarchyGoal} from "./FutarchyGoal.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FutarchyGovernance is Ownable {
-  address[] goals;
+  address[] public goals;
 
   event GoalAdded(uint _goalId, address _addr);
 
