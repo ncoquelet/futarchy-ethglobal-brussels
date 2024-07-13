@@ -7,13 +7,13 @@ import {FutarchyOracle} from "./FutarchyOracle.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FutarchyGoal is Ownable {
-  address[] proposals;
-  address oracle;
-  string description;
-  uint startTime;
-  uint goalMaturity;
+  address[] public proposals;
+  address public oracle;
+  string public description;
+  uint public startTime;
+  uint public goalMaturity;
 
-  event ProposalAdded(uint _proposalId, address _proposalAddr, address _oracleAddress);
+  event ProposalAdded(uint _proposalId, address _proposalAddr);
 
   constructor(string memory _description, address _owner, uint _goalMaturity) Ownable(_owner) {
     description = _description;
