@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .highlight:hover {
   background-color: #e3e3e3;
 }
