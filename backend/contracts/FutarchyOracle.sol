@@ -13,7 +13,7 @@ contract FutarchyOracle {
     emit OracleResultUpdated(address(this), result);
   }
 
-  function getResult() external view returns (uint) {
+  function getResult() public view returns (uint) {
     return result;
   }
 }

@@ -2,64 +2,64 @@
 pragma solidity 0.8.26;
 
 import {FutarchyMarket} from "./FutarchyMarket.sol";
+import {FutarchyOracle} from "./FutarchyOracle.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FutarchyProposal is Ownable {
   string public description;
+  address public oracle;
   bool public closed;
   bool public canceled;
+  bool public goalAchieved;
   uint public balanceYes;
   uint public balanceNo;
-  mapping(address => uint) mappingYes;
-  mapping(address => uint) mappingNo;
+  mapping(address => uint) public mappingYes;
+  mapping(address => uint) public mappingNo;
+
+  event ProposalClosed(bool goalAchieved);
+  event ProposalCanceled();
 
   modifier stillOpen() {
     require(!closed && !canceled);
     _;
   }
 
-  constructor(address _owner, string memory _description) Ownable(_owner) {
+  constructor(address _owner, string memory _description, address _oracle) Ownable(_owner) {
     description = _description;
+    oracle = _oracle;
   }
 
-  function getBalanceYes() external view returns (uint) {
-    return balanceYes;
-  }
-
-  function getBalanceNo() external view returns (uint) {
-    return balanceNo;
-  }
-
-  function buyYes() external payable stillOpen() {
+  function buyYes() external payable stillOpen {
     mappingYes[msg.sender] += msg.value;
     balanceYes += msg.value;
   }
 
-  function buyNo() external payable stillOpen() {
+  function buyNo() external payable stillOpen {
     mappingNo[msg.sender] += msg.value;
     balanceNo += msg.value;
   }
 
   // Should be called by Owner when goalMaturity is achieved
-  function close() external onlyOwner() {
+  function tallyGoal(bool _goalAchieved) external onlyOwner() {
     closed = true;
+    goalAchieved = _goalAchieved;
+    emit ProposalClosed(goalAchieved);
   }
 
   // Should be called by Owner if the proposal is canceled
-  function cancel() external onlyOwner() {
+  function cancel() external onlyOwner {
     canceled = true;
+    emit ProposalCanceled();
   }
 
   // Returns what senders ows of its pool
-  function getShare() internal returns (uint) {
-    uint yesBalance = mappingYes[msg.sender];
-    uint noBalance = mappingNo[msg.sender];
-    require(yesBalance > 0 || noBalance > 0, "No funds");
-    if (yesBalance > 0) {
+  function getShare() internal view returns (uint) {
+    if (goalAchieved) {
+      uint yesBalance = mappingYes[msg.sender];
       return yesBalance / balanceYes;
-    }
-    if (noBalance > 0) {
+    } else {
+      uint noBalance = mappingNo[msg.sender];
       return noBalance / balanceNo;
     }
   }
@@ -88,6 +88,5 @@ contract FutarchyProposal is Ownable {
       (bool successNo, ) = payable(msg.sender).call{value: reward}("");
       require(successNo, "Claiming rewards failed");
     }
-
   }
 }

@@ -30,7 +30,7 @@ describe('Futarchy Governance', () => {
       // when
       const expectedDesc = 'desc'
 
-      await expect(governance.createGoal(expectedDesc, BigInt(10))).to.emit(
+      await expect(governance.createGoal(expectedDesc, BigInt(10), BigInt(20))).to.emit(
         governance,
         'GoalAdded'
       )
@@ -39,7 +39,7 @@ describe('Futarchy Governance', () => {
     it('should revert if sender is not the owner', async () => {
       const { governance, alice } = await loadFixture(deployGovernance)
       await expect(
-        governance.connect(alice).createGoal('desc', BigInt(10))
+        governance.connect(alice).createGoal('desc', BigInt(10), BigInt(20))
       ).to.be.revertedWithCustomError(governance, 'OwnableUnauthorizedAccount')
     })
   })

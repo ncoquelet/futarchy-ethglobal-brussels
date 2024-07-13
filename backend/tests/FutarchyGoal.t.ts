@@ -11,7 +11,7 @@ describe('Futarchy Goal', () => {
     )
     const [owner, alice] = await ethers.getSigners()
 
-    const goal = await FutarchyGoal.deploy('desc', owner, 1000)
+    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20)
 
     return { FutarchyGoal, goal, owner, alice }
   }
@@ -21,10 +21,11 @@ describe('Futarchy Goal', () => {
       const { goal, owner } = await loadFixture(deployGoal)
       expect(await goal.owner()).to.equal(owner.address)
     })
-    it('should set description and goalMaturity', async () => {
+    it('constructor of goal should set attributes properly', async () => {
         const { goal } = await loadFixture(deployGoal)
         expect(await goal.description()).to.equal('desc')
         expect(await goal.goalMaturity()).to.equal(1000)
+        expect(await goal.goalValue()).to.equal(20)
     })
   })
 

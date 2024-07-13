@@ -5,8 +5,8 @@
 .header {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  margin-left: 4rem;
-  margin-right: 4rem;
+  margin-left: 8rem;
+  margin-right: 8rem;
   display: flex;
   justify-content: space-between;
 }
@@ -15,8 +15,8 @@
   /* background-color: #25262A; */
   padding-top: 2rem;
   padding-bottom: 2rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
   background-image: url(/hero.png);
 }
 
@@ -28,23 +28,41 @@
 .header {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  margin-left: 4rem;
-  margin-right: 4rem;
+  margin-left: 8rem;
+  margin-right: 8rem;
   display: flex;
   justify-content: space-between;
 }
 
 .hero {
   padding-top: 2rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
   display: flex;
   justify-content: space-between;
+  min-height: 20rem;
 }
 
 .hero-text {
   color: white;
   margin-bottom: 6rem;
+}
+
+.section {
+  padding-top: 2rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
+}
+
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  max-width: 20rem;
 }
 
 @font-face {
