@@ -7,7 +7,7 @@ describe('Futarchy Proposal', () => {
   async function deployProposal() {
     // Get the ContractFactory and Signers here.
     const FutarchyProposal = await ethers.getContractFactory('FutarchyProposal')
-    const [owner, parentContract, alice, oracle] = await ethers.getSigners()
+    const [owner, parentContract, alice, oracle, bob] = await ethers.getSigners()
 
     const proposal = await ethers.deployContract('FutarchyProposal', [
       parentContract.address,
@@ -15,7 +15,7 @@ describe('Futarchy Proposal', () => {
       oracle.address,
     ])
 
-    return { FutarchyProposal, proposal, owner, parentContract, alice, oracle }
+    return { FutarchyProposal, proposal, owner, parentContract, alice, oracle, bob }
   }
 
   describe('Deployment', () => {
@@ -141,6 +141,34 @@ describe('Futarchy Proposal', () => {
   })
 
   describe('Withdraw', () => {
-    it('should withdraw all my deposit if ', () => {})
+    it('should withdraw all my deposit if ', async () => {
+      const { proposal, parentContract, alice, bob } = await loadFixture(
+        deployProposal
+      )
+      await proposal.connect(bob).buyYes({ value: ethers.parseUnits('1', 'ether') })
+      await proposal.connect(alice).buyNo({ value: ethers.parseUnits('1', 'ether') })
+
+      const initialBalanceBob = await ethers.provider.getBalance(bob);
+      const initialBalanceAlice = await ethers.provider.getBalance(alice);
+      const initialBalanceContract = await ethers.provider.getBalance(proposal);
+
+      await proposal.connect(parentContract).tallyGoal(true)
+      
+      await expect(
+        proposal.connect(alice).withdraw()
+      ).not.to.be.reverted;
+      await expect(
+        proposal.connect(bob).withdraw()
+      ).not.to.be.reverted;
+
+      const finalBalanceBob = await ethers.provider.getBalance(bob);
+      const finalBalanceAlice = await ethers.provider.getBalance(alice);
+      const finalBalanceContract = await ethers.provider.getBalance(proposal);
+
+      expect(finalBalanceBob).to.be.above(initialBalanceBob);
+      expect(finalBalanceAlice).to.be.below(initialBalanceAlice);
+      expect(finalBalanceContract).to.be.below(initialBalanceContract);
+
+    })
   })
 })
