@@ -7,23 +7,33 @@ describe('Futarchy Proposal', () => {
   async function deployProposal() {
     // Get the ContractFactory and Signers here.
     const FutarchyProposal = await ethers.getContractFactory('FutarchyProposal')
-    const [owner, parentContract, alice, oracle, bob] = await ethers.getSigners()
+    const [owner, parentContract, alice, oracle, bob] =
+      await ethers.getSigners()
 
     const proposal = await ethers.deployContract('FutarchyProposal', [
       parentContract.address,
       'description',
-      oracle.address,
     ])
+    await proposal.connect(parentContract).startVoting()
 
-    return { FutarchyProposal, proposal, owner, parentContract, alice, oracle, bob }
+    return {
+      FutarchyProposal,
+      proposal,
+      owner,
+      parentContract,
+      alice,
+      oracle,
+      bob,
+    }
   }
 
   describe('Deployment', () => {
     it('should set the owner', async () => {
-      const { proposal, parentContract, oracle } = await loadFixture(deployProposal)
+      const { proposal, parentContract, oracle } = await loadFixture(
+        deployProposal
+      )
       expect(await proposal.owner()).to.equal(parentContract.address)
       expect(await proposal.description()).to.equal('description')
-      expect(await proposal.oracle()).to.equal(oracle.address)
     })
   })
 
@@ -67,15 +77,19 @@ describe('Futarchy Proposal', () => {
     it('should close proposal', async () => {
       const { proposal, parentContract } = await loadFixture(deployProposal)
 
-      await expect(proposal.connect(parentContract).tallyGoal(true)).to.be.emit(proposal, 'ProposalClosed')
+      await expect(proposal.connect(parentContract).tallyGoal(true)).to.be.emit(
+        proposal,
+        'ProposalClosed'
+      )
     })
     it('should revert close proposal if not owner', async () => {
-      const { proposal, parentContract, alice } = await loadFixture(deployProposal)
-
-      await expect(proposal.connect(alice).tallyGoal(true)).to.be.revertedWithCustomError(
-        proposal,
-        'OwnableUnauthorizedAccount'
+      const { proposal, parentContract, alice } = await loadFixture(
+        deployProposal
       )
+
+      await expect(
+        proposal.connect(alice).tallyGoal(true)
+      ).to.be.revertedWithCustomError(proposal, 'OwnableUnauthorizedAccount')
     })
     it('should revert buyYes when proposal is closed', async () => {
       const { proposal, parentContract, alice } = await loadFixture(
@@ -145,30 +159,29 @@ describe('Futarchy Proposal', () => {
       const { proposal, parentContract, alice, bob } = await loadFixture(
         deployProposal
       )
-      await proposal.connect(bob).buyYes({ value: ethers.parseUnits('1', 'ether') })
-      await proposal.connect(alice).buyNo({ value: ethers.parseUnits('1', 'ether') })
+      await proposal
+        .connect(bob)
+        .buyYes({ value: ethers.parseUnits('1', 'ether') })
+      await proposal
+        .connect(alice)
+        .buyNo({ value: ethers.parseUnits('1', 'ether') })
 
-      const initialBalanceBob = await ethers.provider.getBalance(bob);
-      const initialBalanceAlice = await ethers.provider.getBalance(alice);
-      const initialBalanceContract = await ethers.provider.getBalance(proposal);
+      const initialBalanceBob = await ethers.provider.getBalance(bob)
+      const initialBalanceAlice = await ethers.provider.getBalance(alice)
+      const initialBalanceContract = await ethers.provider.getBalance(proposal)
 
       await proposal.connect(parentContract).tallyGoal(true)
-      
-      await expect(
-        proposal.connect(alice).withdraw()
-      ).not.to.be.reverted;
-      await expect(
-        proposal.connect(bob).withdraw()
-      ).not.to.be.reverted;
 
-      const finalBalanceBob = await ethers.provider.getBalance(bob);
-      const finalBalanceAlice = await ethers.provider.getBalance(alice);
-      const finalBalanceContract = await ethers.provider.getBalance(proposal);
+      await expect(proposal.connect(alice).withdraw()).not.to.be.reverted
+      await expect(proposal.connect(bob).withdraw()).not.to.be.reverted
 
-      expect(finalBalanceBob).to.be.above(initialBalanceBob);
-      expect(finalBalanceAlice).to.be.below(initialBalanceAlice);
-      expect(finalBalanceContract).to.be.below(initialBalanceContract);
+      const finalBalanceBob = await ethers.provider.getBalance(bob)
+      const finalBalanceAlice = await ethers.provider.getBalance(alice)
+      const finalBalanceContract = await ethers.provider.getBalance(proposal)
 
+      expect(finalBalanceBob).to.be.above(initialBalanceBob)
+      expect(finalBalanceAlice).to.be.below(initialBalanceAlice)
+      expect(finalBalanceContract).to.be.below(initialBalanceContract)
     })
   })
 })

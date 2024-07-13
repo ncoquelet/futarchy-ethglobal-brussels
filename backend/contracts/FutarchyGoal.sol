@@ -18,7 +18,7 @@ contract FutarchyGoal is Ownable {
   bool public demo;
 
   modifier timeStillRunning(uint _time) {
-    require((block.timestamp > startTime + _time) || demo, 'Time is not over');
+    require((block.timestamp > startTime + _time) || demo, "Time is not over");
     _;
   }
 
@@ -34,12 +34,13 @@ contract FutarchyGoal is Ownable {
   }
 
   function createProposal(string calldata _description) public onlyOwner {
-    address proposal = address(new FutarchyProposal(address(this), _description, oracle));
+    address proposal = address(new FutarchyProposal(address(this), _description));
     proposals.push(proposal);
     uint proposalId = proposals.length - 1;
     if (proposalId == 0) {
       currentProposal = proposalId;
       startTime = block.timestamp;
+      FutarchyProposal(proposal).startVoting();
     }
     emit ProposalAdded(proposalId, proposal);
   }
@@ -53,15 +54,16 @@ contract FutarchyGoal is Ownable {
   }
 
   // Should be called by owner to end a vote.
-  function endProposalVoting() external onlyOwner() timeStillRunning(votingDeadline) {
+  function endProposalVoting() external onlyOwner timeStillRunning(votingDeadline) {
     bool isAccepted = FutarchyProposal(proposals[currentProposal]).endVoting();
     if (!isAccepted) {
       if (proposals.length > currentProposal) {
         currentProposal++;
         startTime = block.timestamp;
+        FutarchyProposal(proposals[currentProposal]).startVoting();
       }
     }
-  } 
+  }
 
   function goalAchieved() external timeStillRunning(goalMaturity) {
     bool result = FutarchyOracle(oracle).getResult() >= goalValue;
