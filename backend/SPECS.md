@@ -8,7 +8,7 @@
     |
     - FutarchyProposal
       | |
-      | - FutarchyMarket
+      | - FutarchyMarket (v2)
       |
     - FutarchyOracle
 
@@ -29,17 +29,14 @@ Contrat représentant un objectif commun, défini et voter à la majorité par l
 
 Contrat représentant une proposition soumise au marché.
 
-- Attributes : description, tokenomics, expiration, marketYes, marketNo
-- Functions : getMarketYes, getMarketNo
+- Attributes : description, tokenomics, expiration, balanceYes(v1), balanceNo(v1), marketYes(v2), marketNo(v2)
+- Functions : buy(v1), sell(v1), withdraw(v1), cancel, getMarketYes(v2), getMarketNo(v2)
 
-### FutarchyProposalToken
+### FutarchyProposalToken (v2)
 
 Contrat représentant une instance erc20 du token de la proposal (un token unique ? ou une token yes + un token no ??)
 
-- Attributes : description, tokenomics, expiration, marketYes, marketNo
-- Functions : getMarketYes, getMarketNo
-
-### FutarchyMarket
+### FutarchyMarket (v2)
 
 Contrat représentant le marché pour une option d'une proposition.
 
