@@ -2,6 +2,9 @@
 
 import { Inter } from "next/font/google";
 
+// Chakra UI
+import { Button, ButtonGroup } from '@chakra-ui/react'
+
 // Wagmi & RainbowKit
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -60,7 +63,24 @@ export default function RootLayout({
                 >
                   <NextIntlClientProvider locale="en" timeZone={timeZone}>
                     <main className="">
-                      <div className=""></div>
+                      <div className="header">
+                        <div style={{display: 'flex'}}>
+                          <div>
+                          <Button colorScheme='blue' size='sm'>Home</Button>
+                          </div>
+                          <div style={{marginLeft: '2rem'}}>
+                          <Button colorScheme='blue' size='sm'>Profile</Button>
+                          </div>
+                        </div>
+                        <div style={{display: 'flex'}}>
+                          <div>
+                          <Button colorScheme='blue' size='sm'>Sign up</Button>
+                          </div>
+                          <div style={{marginLeft: '2rem'}}>
+                          <Button colorScheme='blue' size='sm' variant='outline'>Connect Wallet</Button>
+                          </div>
+                        </div>
+                      </div>
                       {children}
                     </main>
                   </NextIntlClientProvider>
