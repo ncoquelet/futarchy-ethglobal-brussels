@@ -18,16 +18,16 @@ export default function Home() {
 
   //get the goals from address
   const goals = [
-    {title:'goal1', state: 'trading period', votingDeadLine: '200000', owner: 'owner1', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]},
-    {title:'goal2', state: 'trading period', votingDeadLine: '200000', owner: 'owner2', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]},
-    {id: 'id3', title:'goal3', state: 'trading period', votingDeadLine: '200000', owner: 'owner1', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]}
+    {address: 'address1', title:'goal1', state: 'trading period', votingDeadLine: '200000', owner: 'owner1', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]},
+    {address: 'address2', title:'goal2', state: 'trading period', votingDeadLine: '200000', owner: 'owner2', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]},
+    {address: 'address3', id: 'id3', title:'goal3', state: 'trading period', votingDeadLine: '200000', owner: 'owner1', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]}
   ];
 
   const cardList = goals.map(goal => 
-  <div className="card-container" key={goal.id}>    
+  <div className="card-container" key={goal.address}>    
     <Link href={{
       pathname: '/goal-overview',
-      query: { goalId: goal.id } // the data
+      query: { goalAddress: goal.address } // the data
     }}>
       <ProposalCard
         goal={goal}
@@ -53,7 +53,11 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <Button colorScheme='blue' size='sm'>Test your goal</Button>
+            <Button colorScheme='blue' size='sm'>
+            <Link href='/goal-create'>
+              Test your goal
+            </Link>
+            </Button>
           </div>
         </div>
         <div style={{display: 'flex', alignItems: 'flex-end'}}>
