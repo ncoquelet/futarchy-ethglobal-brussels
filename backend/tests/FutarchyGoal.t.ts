@@ -11,7 +11,7 @@ describe('Futarchy Goal', () => {
     )
     const [owner, alice] = await ethers.getSigners()
 
-    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20)
+    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20, 100)
 
     return { FutarchyGoal, goal, owner, alice }
   }
@@ -26,6 +26,7 @@ describe('Futarchy Goal', () => {
         expect(await goal.description()).to.equal('desc')
         expect(await goal.goalMaturity()).to.equal(1000)
         expect(await goal.goalValue()).to.equal(20)
+        expect(await goal.votingDeadline()).to.equal(100)
     })
   })
 
@@ -46,6 +47,35 @@ describe('Futarchy Goal', () => {
       await expect(
         goal.connect(alice).createProposal('desc')
       ).to.be.revertedWithCustomError(goal, 'OwnableUnauthorizedAccount')
+    })
+  })
+
+  describe('Cancel Proposal', () => {
+    it('should revert cancel a proposal if deadline is not reached', async () => {
+      const { goal, owner } = await loadFixture(deployGoal)
+
+      await goal.connect(owner).createProposal('desc');
+      await expect(
+        goal.connect(owner).cancelCurrentProposal()
+      ).to.be.revertedWith('Time for voting proposal is not over')
+    })
+
+    it('should cancel a proposal if deadline is reached', async () => {
+      const { goal, owner } = await loadFixture(deployGoal)
+
+      await goal.connect(owner).createProposal('desc');
+      await goal.connect(owner).createProposal('desc2');
+
+      const initialProposal = await goal.currentProposal()
+
+      // Augmenter le temps
+      await ethers.provider.send("evm_increaseTime", [150]);
+
+      // Mine un nouveau bloc pour appliquer le changement de temps
+      await ethers.provider.send("evm_mine", []);
+      await goal.connect(owner).cancelCurrentProposal()
+
+      expect(await goal.currentProposal()).to.equal(initialProposal + BigInt(1))
     })
   })
 })

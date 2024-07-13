@@ -14,24 +14,26 @@ contract FutarchyGoal is Ownable {
   uint public startTime;
   uint public goalMaturity;
   uint public goalValue;
+  uint public votingDeadline;
 
 
   event ProposalAdded(uint _proposalId, address _proposalAddr);
 
-  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue) Ownable(_owner) {
+  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline) Ownable(_owner) {
     description = _description;
     oracle = address(new FutarchyOracle());
     goalMaturity = _goalMaturity;
     goalValue = _goalValue;
-    startTime = block.timestamp;
+    votingDeadline = _votingDeadline;
   }
 
   function createProposal(string calldata _description) public onlyOwner {
-    address proposal = address(new FutarchyProposal(owner(), _description, oracle));
+    address proposal = address(new FutarchyProposal(address(this), _description, oracle));
     proposals.push(proposal);
     uint proposalId = proposals.length - 1;
     if (proposalId == 0) {
       currentProposal = proposalId;
+      startTime = block.timestamp;
     }
     emit ProposalAdded(proposalId, proposal);
   }
@@ -46,9 +48,11 @@ contract FutarchyGoal is Ownable {
 
   // Should be called by owner to cancel a proposal that was not voted.
   function cancelCurrentProposal() external onlyOwner() {
+    require(block.timestamp > startTime + votingDeadline, 'Time for voting proposal is not over');
     FutarchyProposal(proposals[currentProposal]).cancel();
     if (proposals.length > currentProposal) {
       currentProposal++;
+      startTime = block.timestamp;
     }
   } 
 
