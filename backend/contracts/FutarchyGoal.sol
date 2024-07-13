@@ -27,7 +27,7 @@ contract FutarchyGoal is Ownable {
     proposals.push(proposal);
     uint proposalId = proposals.length - 1;
 
-    emit ProposalAdded(proposalId, proposal, oracle);
+    emit ProposalAdded(proposalId, proposal);
   }
 
   function nbProposals() external view returns (uint256) {
