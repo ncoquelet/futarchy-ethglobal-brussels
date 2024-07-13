@@ -34,28 +34,47 @@ export default function Home() {
         />
         </div>
       </div>
-      <h1>List of goals</h1>
-      <Link href="/goal-overview">
-          <ProposalCard
-            title="Title Title Title Title Title Title Title Title Title Title Title ?"
-            tradingPeriod="05.07.2024 ~ 05.08.2024"
-            proposals={proposals}
-          />
-      </Link>
-      <Link href="/goal-overview">
-          <ProposalCard
-            title="Title Title Title Title Title Title Title Title Title Title Title ?"
-            tradingPeriod="05.07.2024 ~ 05.08.2024"
-            proposals={proposals}
-          />
-      </Link>
-      <Link href="/goal-overview">
-          <ProposalCard
-            title="Title Title Title Title Title Title Title Title Title Title Title ?"
-            tradingPeriod="05.07.2024 ~ 05.08.2024"
-            proposals={proposals}
-          />
-      </Link>
+      <div className="section">
+        <h1>New goals</h1>
+        <div className="card-list">
+          <div className="card-container">
+            <Link href="/goal-overview">
+              <ProposalCard
+                title="Title Title Title Title Title Title Title Title Title Title Title ?"
+                tradingPeriod="05.07.2024 ~ 05.08.2024"
+                proposals={proposals}
+              />
+            </Link>
+          </div>
+          <div className="card-container">
+            <Link href="/goal-overview">
+              <ProposalCard
+                title="Title Title Title Title Title Title Title Title Title Title Title ?"
+                tradingPeriod="05.07.2024 ~ 05.08.2024"
+                proposals={proposals}
+              />
+            </Link>
+          </div>
+          <div className="card-container">
+            <Link href="/goal-overview">
+              <ProposalCard
+                title="Title Title Title Title Title Title Title Title Title Title Title ?"
+                tradingPeriod="05.07.2024 ~ 05.08.2024"
+                proposals={proposals}
+              />
+            </Link>
+          </div>
+          <div className="card-container">
+            <Link href="/goal-overview">
+              <ProposalCard
+                title="Title Title Title Title Title Title Title Title Title Title Title ?"
+                tradingPeriod="05.07.2024 ~ 05.08.2024"
+                proposals={proposals}
+              />
+            </Link>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
