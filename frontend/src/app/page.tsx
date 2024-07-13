@@ -14,7 +14,7 @@ export default function Home() {
   ];
   return (
     <main>
-      <div className="hero">
+      <div className="hero" style={{ display: 'flex', justifyContent: 'space-between'}}>
         <div>
           <div>
             <h1 className="hero-text">

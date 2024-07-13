@@ -1,64 +1,52 @@
 "use client";
 import Link from 'next/link'
+import Image from 'next/image'
 
-export default function Goal() {
+// Chakra UI
+import { Button, ButtonGroup } from '@chakra-ui/react'
+
+export default function GoalOverview() {
   return (
-    <div style={{margin: '2rem'}}>
-      <h1>Goal Overview with proposal timeline</h1>
+    <div>
+      <h3>category: ecology</h3>
+      <h3>state: actif</h3>
+      <h1>Reduce my city's CO2 emissions by 1% in one year</h1>
+      <h3>proposed by: 0x456787456789865678985678</h3>
 
-      <h2 style={{marginBottom: '2rem'}}>Goal description</h2>
-      <h2 style={{marginBottom: '2rem'}} >Proposal sequence + states:</h2>
+      <div style={{display: 'flex;', width: '100%' }}>
+        <div style={{display: 'flex;', width: '65%' }}>
+          <h2>Overview</h2>
+          <h3>Quick description of the goal</h3>
+          <h2>Motivation, Goal</h2>
+          <p>Complete description of the goal</p>
+          <h2>Rules</h2>
+          <p>If my city's CO2 emissions reduce reduce by <=1%, voters on YES win.</p>
+          <p>If not, voters on NO win.</p>
 
-      <div>
-        <div>
-          <Link href="/proposal">
-            <div>
-              Proposal 1 Lorem Ipsum foobar blabla (active)
-            </div>
-            <div>
-              30% YES / 60% NO
-            </div>
-            <div>
-              state: REJECTED
-            </div>
-          </Link>
+
+
+          
+
         </div>
-        <div style={{ height: '2rem', width: '2px', backgroundColor: 'black' }}></div>
+        <div style={{display: 'flex;', width: '35%' }}>
+          <div>
+            <h2>Trading period</h2>
+          </div>
+          <div>
+            <h2>Testing period</h2>
+          </div>
+          <div>
+            <h2>Current results</h2>
+            <div>
+              40% YES
+            </div>
+            <div>
+              60% NO
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div style={{ opacity: '50%'}}>
-        <div>
-          <Link href="/proposal">
-            <div>
-              Proposal 2 Lorem Ipsum foobar blabla (active)
-            </div>
-            <div>
-              80% YES / 20% NO
-            </div>
-            <div>
-              state: 2 days left
-            </div>
-          </Link>
-        </div>
-        <div style={{ height: '2rem', width: '2px', backgroundColor: 'black' }}></div>
-      </div>
-
-      <div>
-        <div>
-          <Link href="/proposal">
-            <div>
-              Proposal 1 Lorem Ipsum foobar blabla (active)
-            </div>
-            <div>
-              30% YES / 60% NO
-            </div>
-            <div>
-              state: REJECTED
-            </div>
-          </Link>
-        </div>
-        <div style={{ height: '2rem', width: '2px', backgroundColor: 'black' }}></div>
-      </div>
     </div>
   );
 }
