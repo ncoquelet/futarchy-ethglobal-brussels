@@ -16,6 +16,10 @@ contract FutarchyGoal is Ownable {
   uint public goalValue;
   uint public votingDeadline;
 
+  modifier timeStillRunning(uint _time) {
+    require(block.timestamp > startTime + _time, 'Time is not over');
+    _;
+  }
 
   event ProposalAdded(uint _proposalId, address _proposalAddr);
 
@@ -47,8 +51,7 @@ contract FutarchyGoal is Ownable {
   }
 
   // Should be called by owner to cancel a proposal that was not voted.
-  function cancelCurrentProposal() external onlyOwner() {
-    require(block.timestamp > startTime + votingDeadline, 'Time for voting proposal is not over');
+  function cancelCurrentProposal() external onlyOwner() timeStillRunning(votingDeadline) {
     FutarchyProposal(proposals[currentProposal]).cancel();
     if (proposals.length > currentProposal) {
       currentProposal++;
@@ -56,8 +59,7 @@ contract FutarchyGoal is Ownable {
     }
   } 
 
-  function goalAchieved() external {
-    require(block.timestamp > startTime + goalMaturity, 'Time for achieving goal is not over yet');
+  function goalAchieved() external timeStillRunning(goalMaturity) {
     bool result = FutarchyOracle(oracle).getResult() >= goalValue;
     FutarchyProposal(proposals[currentProposal]).tallyGoal(result);
   }
