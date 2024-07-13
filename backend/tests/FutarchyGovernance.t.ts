@@ -9,11 +9,11 @@ describe('Futarchy Governance', () => {
     const FutarchyGovernance = await ethers.getContractFactory(
       'FutarchyGovernance'
     )
-    const [owner] = await ethers.getSigners()
+    const [owner, alice] = await ethers.getSigners()
 
     const governance = await FutarchyGovernance.deploy()
 
-    return { FutarchyGovernance, governance, owner }
+    return { FutarchyGovernance, governance, owner, alice }
   }
 
   describe('Deployment', () => {
@@ -23,22 +23,24 @@ describe('Futarchy Governance', () => {
     })
   })
 
-  describe('Add Proposal', () => {
-    it('should add new proposal', async () => {
+  describe('Add Goal', () => {
+    it('should add new goal', async () => {
       const { governance, owner } = await loadFixture(deployGovernance)
 
       // when
       const expectedDesc = 'desc'
-      const expectedDuration = 14
 
-      await expect(
-        governance.createProposal(expectedDesc, expectedDuration)
-      ).to.emit(governance, 'ProposalAdded')
+      await expect(governance.createGoal(expectedDesc, BigInt(10))).to.emit(
+        governance,
+        'GoalAdded'
+      )
     })
 
     it('should revert if sender is not the owner', async () => {
-      const { governance, owner } = await loadFixture(deployGovernance)
-      await expect(governance.createProposal('desc', 14)).to.be.reverted()
+      const { governance, alice } = await loadFixture(deployGovernance)
+      await expect(
+        governance.connect(alice).createGoal('desc', BigInt(10))
+      ).to.be.revertedWithCustomError(governance, 'OwnableUnauthorizedAccount')
     })
   })
 })

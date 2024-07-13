@@ -6,25 +6,28 @@ import {FutarchyOracle} from "./FutarchyOracle.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-
 contract FutarchyGoal is Ownable {
-  address[] proposals;
-  address oracle;
-  string description;
+  address[] public proposals;
+  address public oracle;
+  string public description;
+  uint public startTime;
+  uint public goalMaturity;
 
-  event ProposalAdded(uint _proposalId, address _proposalAddr, address _oracleAddress);
+  event ProposalAdded(uint _proposalId, address _proposalAddr);
 
-  constructor(string memory _description, address _owner) Ownable(_owner) {
+  constructor(string memory _description, address _owner, uint _goalMaturity) Ownable(_owner) {
     description = _description;
     oracle = address(new FutarchyOracle());
+    goalMaturity = _goalMaturity;
+    startTime = block.timestamp;
   }
 
-  function createProposal(string calldata _description) public onlyOwner() {
-    address proposal = address(new FutarchyProposal(_description));
+  function createProposal(string calldata _description) public onlyOwner {
+    address proposal = address(new FutarchyProposal(owner(), _description));
     proposals.push(proposal);
     uint proposalId = proposals.length - 1;
 
-    emit ProposalAdded(proposalId, proposal);
+    emit ProposalAdded(proposalId, proposal, oracle);
   }
 
   function nbProposals() external view returns (uint256) {
@@ -34,9 +37,4 @@ contract FutarchyGoal is Ownable {
   function getProposal(uint _proposalId) external view returns (address) {
     return proposals[_proposalId];
   }
-
-  function getGoalOracle() external view returns (address) {
-    return oracle;
-  }
-
 }
