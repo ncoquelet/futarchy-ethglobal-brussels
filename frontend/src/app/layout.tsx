@@ -28,7 +28,21 @@ const timeZone = "Europe/Paris";
 
 const theme = extendTheme({
   colors: {
-    darkblue: '#2730FF'
+    customBlue: {
+      100: "#2730FF",
+      // ...
+      900: "#2730FF",
+    },
+    customDark: {
+      100: "#25262A",
+      // ...
+      900: "#25262A",
+    },
+    customLight: {
+      100: "#9DA3AE",
+      // ...
+      900: "#9DA3AE",
+    },
   },
 })
 
@@ -74,22 +88,109 @@ export default function RootLayout({
                       <div className="header">
                         <div style={{display: 'flex'}}>
                           <div>
-                            <Button colorScheme='blue' size='sm'>
+                            <Button size='sm' variant='ghost'>
                               <Link href="/">
                                 Home
                               </Link>
                             </Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
-                            <Button colorScheme='blue' size='sm'>Profile</Button>
+                            <Button size='sm' variant='ghost'>Profile</Button>
                           </div>
                         </div>
                         <div style={{display: 'flex'}}>
                           <div>
-                            <Button colorScheme='blue' size='sm'>Sign up</Button>
+                            <Button bg='customBlue.100' color='white' borderColor='customBlue.100' size='sm'>Sign up</Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
-                            <ConnectButton />
+                            <ConnectButton.Custom>
+                              {({
+                                account,
+                                chain,
+                                openAccountModal,
+                                openChainModal,
+                                openConnectModal,
+                                authenticationStatus,
+                                mounted,
+                              }) => {
+                                // Note: If your app doesn't use authentication, you
+                                // can remove all 'authenticationStatus' checks
+                                const ready = mounted && authenticationStatus !== 'loading';
+                                const connected =
+                                  ready &&
+                                  account &&
+                                  chain &&
+                                  (!authenticationStatus ||
+                                    authenticationStatus === 'authenticated');
+                                return (
+                                  <div
+                                    {...(!ready && {
+                                      'aria-hidden': true,
+                                      'style': {
+                                        opacity: 0,
+                                        pointerEvents: 'none',
+                                        userSelect: 'none',
+                                      },
+                                    })}
+                                  >
+                                    {(() => {
+                                      if (!connected) {
+                                        return (
+                                          <Button variant='outline' color='customBlue.100' size='sm' onClick={openConnectModal} type="button" borderColor='customBlue.100'>
+                                            Connect Wallet
+                                          </Button>
+                                        );
+                                      }
+                                      if (chain.unsupported) {
+                                        return (
+                                          <Button variant='outline' color='customBlue.100' size='sm' onClick={openChainModal} type="button" borderColor='customBlue.100'>
+                                            Wrong network
+                                          </Button>
+                                        );
+                                      }
+                                      return (
+                                        <div style={{ display: 'flex', gap: 12 }}>
+                                          <Button variant='outline' color='customBlue.100' size='sm'
+                                            onClick={openChainModal}
+                                            style={{ display: 'flex', alignItems: 'center' }}
+                                            type="button"
+                                            borderColor='customBlue.100'
+                                          >
+                                            {chain.hasIcon && (
+                                              <div
+                                                style={{
+                                                  background: chain.iconBackground,
+                                                  width: 12,
+                                                  height: 12,
+                                                  borderRadius: 999,
+                                                  overflow: 'hidden',
+                                                  marginRight: 4,
+                                                }}
+                                              >
+                                                {chain.iconUrl && (
+                                                  <img
+                                                    alt={chain.name ?? 'Chain icon'}
+                                                    src={chain.iconUrl}
+                                                    style={{ width: 12, height: 12 }}
+                                                  />
+                                                )}
+                                              </div>
+                                            )}
+                                            {chain.name}
+                                          </Button>
+                                          <Button variant='outline' color='customBlue.100' size='sm' onClick={openAccountModal} type="button" borderColor='customBlue.100'>
+                                            {account.displayName}
+                                            {account.displayBalance
+                                              ? ` (${account.displayBalance})`
+                                              : ''}
+                                          </Button>
+                                        </div>
+                                      );
+                                    })()}
+                                  </div>
+                                );
+                              }}
+                            </ConnectButton.Custom>
                           </div>
                         </div>
                       </div>
