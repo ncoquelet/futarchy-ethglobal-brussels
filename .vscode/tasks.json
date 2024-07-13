@@ -1,6 +1,6 @@
 {
-	"version": "2.0.0",
-	"tasks": [
+  "version": "2.0.0",
+  "tasks": [
     {
       "type": "hardhat",
       "task": "test",
@@ -33,11 +33,11 @@
     },
     {
       "type": "npm",
-      "script": "simulate",
+      "script": "journey",
       "path": "backend",
       "problemMatcher": [],
-      "label": "Simulate RobinWood",
-      "detail": "npx hardhat run scripts/simulation.ts --network localhost"
+      "label": "Run journey",
+      "detail": "npx hardhat run scripts/journey.ts --network localhost"
     },
     {
       "type": "npm",

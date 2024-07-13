@@ -24,7 +24,7 @@
     "test": "npx hardhat test",
     "coverage": "npx hardhat coverage",
     "node": "npx hardhat node",
-    "simulate": "npx hardhat run scripts/simulation.ts --network localhost",
+    "journey": "npx hardhat run scripts/run-journey.ts --network localhost",
     "deploy:local": "npx hardhat run scripts/deploy.ts --network localhost",
     "deploy:sepolia": "HARDHAT_ENV=production npx hardhat run scripts/deploy.ts --network sepolia",
     "deploy:mumbai": "npx hardhat run scripts/deploy.ts --network mumbai",
@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "nft.storage": "^7.2.0"
+    "nft.storage": "^7.2.0",
+    "dayjs": "1.11.11"
   }
 }
