@@ -1,9 +1,83 @@
 "use client";
 
-export default function Goal() {
+import { Box, Button, FormControl, FormLabel, Input, Select, Textarea, VStack, HStack } from "@chakra-ui/react";
+
+export default function ProposalForm() {
   return (
-    <div>
-      <h1>Goal Form and proposals form</h1>
-    </div>
+    <Box maxW="600px" mx="auto" p={4}>
+      <VStack spacing={4} align="stretch">
+        <FormControl>
+          <FormLabel>Category</FormLabel>
+          <Select placeholder="Select category">
+            <option value="ecologic">Ecologic</option>
+            <option value="politic">Politic</option>
+            <option value="economic">Economic</option>
+          </Select>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Title</FormLabel>
+          <Input placeholder="Will increasing bike lanes by 20% reduce my city's CO2 emissions?" />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Trading period</FormLabel>
+          <HStack spacing={4}>
+            <Box>
+              <FormLabel>Start date</FormLabel>
+              <Input type="date" />
+            </Box>
+            <Box>
+              <FormLabel>End date</FormLabel>
+              <Input type="date" />
+            </Box>
+          </HStack>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Testing period</FormLabel>
+          <HStack spacing={4}>
+            <Box>
+              <FormLabel>Start date</FormLabel>
+              <Input type="date" />
+            </Box>
+            <Box>
+              <FormLabel>End date</FormLabel>
+              <Input type="date" />
+            </Box>
+          </HStack>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Overview</FormLabel>
+          <Textarea placeholder="This proposal aims to explore the potential environmental benefits of expanding the city's bike lane network by 20%..." />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Motivation, Goal</FormLabel>
+          <Textarea placeholder="The primary motivation for this proposal is to address the growing concern over urban air pollution and climate change..." />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Details</FormLabel>
+          <Textarea placeholder="To achieve the proposed CO2 emission reduction, the following steps will be undertaken:..." />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Rules</FormLabel>
+          <Textarea placeholder="If my city's CO2 emissions reduce by <=1%, voters on Yes win. If my city's CO2 emissions reduce by >1%, voters on No win." />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>External link (Optional)</FormLabel>
+          <Input placeholder="www.bougezvousauvelo.fr" />
+        </FormControl>
+
+        <HStack justify="space-between">
+          <Button colorScheme="blue" variant="outline">Precedent</Button>
+          <Button colorScheme="blue">Next</Button>
+        </HStack>
+      </VStack>
+    </Box>
   );
 }
