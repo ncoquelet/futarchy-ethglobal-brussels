@@ -11,7 +11,7 @@ describe('Futarchy Goal', () => {
     )
     const [owner, alice] = await ethers.getSigners()
 
-    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20, 100)
+    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20, 100, false)
 
     return { FutarchyGoal, goal, owner, alice }
   }

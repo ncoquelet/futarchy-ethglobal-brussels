@@ -15,20 +15,22 @@ contract FutarchyGoal is Ownable {
   uint public goalMaturity;
   uint public goalValue;
   uint public votingDeadline;
+  bool public demo;
 
   modifier timeStillRunning(uint _time) {
-    require(block.timestamp > startTime + _time, 'Time is not over');
+    require((block.timestamp > startTime + _time) || demo, 'Time is not over');
     _;
   }
 
   event ProposalAdded(uint _proposalId, address _proposalAddr);
 
-  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline) Ownable(_owner) {
+  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) Ownable(_owner) {
     description = _description;
     oracle = address(new FutarchyOracle());
     goalMaturity = _goalMaturity;
     goalValue = _goalValue;
     votingDeadline = _votingDeadline;
+    demo = _demo;
   }
 
   function createProposal(string calldata _description) public onlyOwner {

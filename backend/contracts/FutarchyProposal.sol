@@ -32,6 +32,7 @@ contract FutarchyProposal is Ownable {
     oracle = _oracle;
     canceled = false;
     accepted = false;
+
   }
 
   function buyYes() external payable stillOpen {
