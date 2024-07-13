@@ -18,7 +18,12 @@
     "@types/node": "20.9.0",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.15",
+<<<<<<< HEAD
     "dotenv": "^16.4.5",
+=======
+    "dotenv": "^16.3.1",
+    "formik": "^2.4.6",
+>>>>>>> ede013fb0fe45575a549ee164821e0ff460de1af
     "framer-motion": "^10.16.12",
     "mime": "^4.0.0",
     "next": "^14.2.5",

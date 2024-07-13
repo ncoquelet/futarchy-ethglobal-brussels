@@ -11,6 +11,7 @@ contract FutarchyProposal is Ownable {
   address public oracle;
   bool public closed;
   bool public canceled;
+  bool public accepted;
   bool public goalAchieved;
   uint public balanceYes;
   uint public balanceNo;
@@ -19,15 +20,19 @@ contract FutarchyProposal is Ownable {
 
   event ProposalClosed(bool goalAchieved);
   event ProposalCanceled();
+  event ProposalAccepted();
 
   modifier stillOpen() {
-    require(!closed && !canceled);
+    require(!(canceled || accepted || closed));
     _;
   }
 
   constructor(address _owner, string memory _description, address _oracle) Ownable(_owner) {
     description = _description;
     oracle = _oracle;
+    canceled = false;
+    accepted = false;
+
   }
 
   function buyYes() external payable stillOpen {
@@ -47,10 +52,17 @@ contract FutarchyProposal is Ownable {
     emit ProposalClosed(goalAchieved);
   }
 
-  // Should be called by Owner if the proposal is canceled
-  function cancel() external onlyOwner {
-    canceled = true;
-    emit ProposalCanceled();
+  // Should be called by Goal if the proposal is ended
+  function endVoting() external onlyOwner() returns (bool) {
+    if (balanceNo >= balanceYes) {
+      canceled = true;
+      emit ProposalCanceled();
+      return false;
+    } else {
+      accepted = true;
+      emit ProposalAccepted();
+      return true;
+    }
   }
 
   // Returns what senders ows of its pool

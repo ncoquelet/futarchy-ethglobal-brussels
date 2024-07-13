@@ -6,14 +6,14 @@ import {FutarchyGoal} from "./FutarchyGoal.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FutarchyGovernance is Ownable {
-  address[] goals;
+  address[] public goals;
 
   event GoalAdded(uint _goalId, address _addr);
 
   constructor() Ownable(msg.sender) {}
 
-  function createGoal(string calldata _description, uint _goalMaturity, uint _goalValue, uint _votingDeadline) public onlyOwner() {
-    address addr = address(new FutarchyGoal(_description, msg.sender, _goalMaturity, _goalValue, _votingDeadline));
+  function createGoal(string calldata _description, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) public onlyOwner() {
+    address addr = address(new FutarchyGoal(_description, msg.sender, _goalMaturity, _goalValue, _votingDeadline, _demo));
     goals.push(addr);
     uint goalId = goals.length - 1;
     emit GoalAdded(goalId, addr);

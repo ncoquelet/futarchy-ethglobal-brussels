@@ -11,7 +11,7 @@ describe('Futarchy Goal', () => {
     )
     const [owner, alice] = await ethers.getSigners()
 
-    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20, 100)
+    const goal = await FutarchyGoal.deploy('desc', owner, 1000, 20, 100, false)
 
     return { FutarchyGoal, goal, owner, alice }
   }
@@ -56,8 +56,8 @@ describe('Futarchy Goal', () => {
 
       await goal.connect(owner).createProposal('desc');
       await expect(
-        goal.connect(owner).cancelCurrentProposal()
-      ).to.be.revertedWith('Time for voting proposal is not over')
+        goal.connect(owner).endProposalVoting()
+      ).to.be.revertedWith('Time is not over')
     })
 
     it('should cancel a proposal if deadline is reached', async () => {
@@ -73,7 +73,7 @@ describe('Futarchy Goal', () => {
 
       // Mine un nouveau bloc pour appliquer le changement de temps
       await ethers.provider.send("evm_mine", []);
-      await goal.connect(owner).cancelCurrentProposal()
+      await goal.connect(owner).endProposalVoting()
 
       expect(await goal.currentProposal()).to.equal(initialProposal + BigInt(1))
     })

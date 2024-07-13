@@ -103,7 +103,7 @@ describe('Futarchy Proposal', () => {
     it('should revert cancel proposal if not owner', async () => {
       const { proposal, parentContract } = await loadFixture(deployProposal)
 
-      await expect(proposal.cancel()).to.be.revertedWithCustomError(
+      await expect(proposal.endVoting()).to.be.revertedWithCustomError(
         proposal,
         'OwnableUnauthorizedAccount'
       )
@@ -112,7 +112,7 @@ describe('Futarchy Proposal', () => {
     it('should cancel proposal', async () => {
       const { proposal, parentContract } = await loadFixture(deployProposal)
 
-      await expect(proposal.connect(parentContract).cancel()).to.be.emit(
+      await expect(proposal.connect(parentContract).endVoting()).to.be.emit(
         proposal,
         'ProposalCanceled'
       )
@@ -122,7 +122,7 @@ describe('Futarchy Proposal', () => {
       const { proposal, parentContract, alice } = await loadFixture(
         deployProposal
       )
-      await proposal.connect(parentContract).cancel()
+      await proposal.connect(parentContract).endVoting()
       await expect(
         proposal
           .connect(alice)
@@ -133,7 +133,7 @@ describe('Futarchy Proposal', () => {
       const { proposal, parentContract, alice } = await loadFixture(
         deployProposal
       )
-      await proposal.connect(parentContract).cancel()
+      await proposal.connect(parentContract).endVoting()
       await expect(
         proposal.connect(alice).buyNo({ value: ethers.parseUnits('1', 'gwei') })
       ).to.be.revertedWithoutReason()

@@ -15,16 +15,22 @@ contract FutarchyGoal is Ownable {
   uint public goalMaturity;
   uint public goalValue;
   uint public votingDeadline;
+  bool public demo;
 
+  modifier timeStillRunning(uint _time) {
+    require((block.timestamp > startTime + _time) || demo, 'Time is not over');
+    _;
+  }
 
   event ProposalAdded(uint _proposalId, address _proposalAddr);
 
-  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline) Ownable(_owner) {
+  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) Ownable(_owner) {
     description = _description;
     oracle = address(new FutarchyOracle());
     goalMaturity = _goalMaturity;
     goalValue = _goalValue;
     votingDeadline = _votingDeadline;
+    demo = _demo;
   }
 
   function createProposal(string calldata _description) public onlyOwner {
@@ -46,18 +52,18 @@ contract FutarchyGoal is Ownable {
     return proposals[_proposalId];
   }
 
-  // Should be called by owner to cancel a proposal that was not voted.
-  function cancelCurrentProposal() external onlyOwner() {
-    require(block.timestamp > startTime + votingDeadline, 'Time for voting proposal is not over');
-    FutarchyProposal(proposals[currentProposal]).cancel();
-    if (proposals.length > currentProposal) {
-      currentProposal++;
-      startTime = block.timestamp;
+  // Should be called by owner to end a vote.
+  function endProposalVoting() external onlyOwner() timeStillRunning(votingDeadline) {
+    bool isAccepted = FutarchyProposal(proposals[currentProposal]).endVoting();
+    if (!isAccepted) {
+      if (proposals.length > currentProposal) {
+        currentProposal++;
+        startTime = block.timestamp;
+      }
     }
   } 
 
-  function goalAchieved() external {
-    require(block.timestamp > startTime + goalMaturity, 'Time for achieving goal is not over yet');
+  function goalAchieved() external timeStillRunning(goalMaturity) {
     bool result = FutarchyOracle(oracle).getResult() >= goalValue;
     FutarchyProposal(proposals[currentProposal]).tallyGoal(result);
   }
