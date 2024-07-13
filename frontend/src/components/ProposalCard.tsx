@@ -1,4 +1,5 @@
 import { Box, Text, Stack } from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons'
 
 interface ProposalCardProps {
   goal: any;
@@ -15,18 +16,22 @@ const ProposalCard: React.FC<ProposalCardProps> = ({ goal, proposals, votingDead
       p="6"
       bg="white"
       boxShadow="md"
-      mt="4"
+      style={{minWidth:'20rem'}}
     >
+      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+        <StarIcon color='gray.300'/>
+      </div>
+      
       <Stack spacing={3}>
-        <Text fontWeight="bold" fontSize="lg">
+        <h1>
           {goal.title}
-        </Text>
-        <Text fontSize="sm">
+        </h1>
+        {/* <Text fontSize="sm">
           State: {goal.state}
-        </Text>
-        <Text fontWeight="bold">
-          {proposals.length} Proposals
-        </Text>
+        </Text> */}
+        <h3>
+          {proposals.length} Proposals:
+        </h3>
         {proposals.map((proposal, index) => (
           <Box
             key={index}

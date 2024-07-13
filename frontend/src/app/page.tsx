@@ -90,31 +90,33 @@ export default function Home() {
 
     <main className="p-4 font-satoshi">
       <div className="hero" style={{ display: 'flex', justifyContent: 'space-between'}}>
-        <div>
+        <div style={{flex: '0 0 30%'}}>
           <div>
-            <div className="hero-text font-satoshi text-4xl font-bold mb-4">
-              Drop your goal and test it with community 
+            <div className="hero-text font-satoshi text-4xl font-bold mb-4" style={{marginTop:'1rem'}}>
+              Chose a goal and reach it with community 
             </div>
           </div>
           <div>
-            <Button colorScheme='blue' size='sm'>
+            <Button bg='white' color='customBlue.100' size='md'>
             <Link href='/goal-create'>
               Test your goal
             </Link>
             </Button>
           </div>
         </div>
-        <div style={{display: 'flex', alignItems: 'flex-end'}}>
-        <Image
-          src="/sunset.png"
-          width={300}
-          height={300}
-          alt="Picture of a sunset"
-        />
+        <div style={{display: 'flex', flex: '0 0 50%', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+          <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+            <Image
+              src="/sunset.png"
+              width={350}
+              height={350}
+              alt="Picture of a sunset"
+            />
+          </div>
         </div>
       </div>
-      <div className="section">
-        <h1>New goals</h1>
+      <div className="section" style={{marginBottom:'2rem'}}>
+        <h1 style={{marginTop:'1rem'}}>New goals</h1>
         <div className="card-list">
           {cardList}
         </div>

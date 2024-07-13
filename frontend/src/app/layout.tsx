@@ -88,19 +88,19 @@ export default function RootLayout({
                       <div className="header">
                         <div style={{display: 'flex'}}>
                           <div>
-                            <Button size='sm' variant='ghost'>
+                            <Button size='md' variant='ghost'>
                               <Link href="/">
                                 Home
                               </Link>
                             </Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
-                            <Button size='sm' variant='ghost'>Profile</Button>
+                            <Button size='md' variant='ghost'>Profile</Button>
                           </div>
                         </div>
                         <div style={{display: 'flex'}}>
                           <div>
-                            <Button bg='customBlue.100' color='white' borderColor='customBlue.100' size='sm'>Sign up</Button>
+                            <Button bg='customBlue.100' color='white' borderColor='customBlue.100' size='md'>Sign up</Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
                             <ConnectButton.Custom>
@@ -136,21 +136,21 @@ export default function RootLayout({
                                     {(() => {
                                       if (!connected) {
                                         return (
-                                          <Button variant='outline' color='customBlue.100' size='sm' onClick={openConnectModal} type="button" borderColor='customBlue.100'>
+                                          <Button variant='outline' color='customBlue.100' size='md' onClick={openConnectModal} type="button" borderColor='customBlue.100'>
                                             Connect Wallet
                                           </Button>
                                         );
                                       }
                                       if (chain.unsupported) {
                                         return (
-                                          <Button variant='outline' color='customBlue.100' size='sm' onClick={openChainModal} type="button" borderColor='customBlue.100'>
+                                          <Button variant='outline' color='customBlue.100' size='md' onClick={openChainModal} type="button" borderColor='customBlue.100'>
                                             Wrong network
                                           </Button>
                                         );
                                       }
                                       return (
                                         <div style={{ display: 'flex', gap: 12 }}>
-                                          <Button variant='outline' color='customBlue.100' size='sm'
+                                          <Button variant='outline' color='customBlue.100' size='md'
                                             onClick={openChainModal}
                                             style={{ display: 'flex', alignItems: 'center' }}
                                             type="button"
@@ -178,7 +178,7 @@ export default function RootLayout({
                                             )}
                                             {chain.name}
                                           </Button>
-                                          <Button variant='outline' color='customBlue.100' size='sm' onClick={openAccountModal} type="button" borderColor='customBlue.100'>
+                                          <Button variant='outline' color='customBlue.100' size='md' onClick={openAccountModal} type="button" borderColor='customBlue.100'>
                                             {account.displayName}
                                             {account.displayBalance
                                               ? ` (${account.displayBalance})`
