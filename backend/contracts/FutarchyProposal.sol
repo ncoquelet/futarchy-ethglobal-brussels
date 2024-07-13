@@ -85,6 +85,8 @@ contract FutarchyProposal is Ownable {
 
     if (closed) {
       uint reward = getShare() * (balanceYes + balanceNo);
+      mappingYes[msg.sender] = 0;
+      mappingNo[msg.sender] = 0;
       (bool successNo, ) = payable(msg.sender).call{value: reward}("");
       require(successNo, "Claiming rewards failed");
     }

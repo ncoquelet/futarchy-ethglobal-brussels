@@ -18,9 +18,9 @@ export default function Home() {
       <div className="hero" style={{ display: 'flex', justifyContent: 'space-between'}}>
         <div>
           <div>
-          <h1 className="hero-text font-satoshi text-4xl font-bold mb-4">
+            <div className="hero-text font-satoshi text-4xl font-bold mb-4">
               Drop your goal and test it with community 
-            </h1>
+            </div>
           </div>
           <div>
             <Button colorScheme='blue' size='sm'>Test your goal</Button>
