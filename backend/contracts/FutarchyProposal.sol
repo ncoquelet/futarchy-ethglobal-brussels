@@ -11,8 +11,8 @@ contract FutarchyProposal is Ownable {
   bool public canceled;
   uint public balanceYes;
   uint public balanceNo;
-  mapping(address => uint) mappingYes;
-  mapping(address => uint) mappingNo;
+  mapping(address => uint) public mappingYes;
+  mapping(address => uint) public mappingNo;
 
   modifier stillOpen() {
     require(!closed && !canceled);
@@ -23,31 +23,23 @@ contract FutarchyProposal is Ownable {
     description = _description;
   }
 
-  function getBalanceYes() external view returns (uint) {
-    return balanceYes;
-  }
-
-  function getBalanceNo() external view returns (uint) {
-    return balanceNo;
-  }
-
-  function buyYes() external payable stillOpen() {
+  function buyYes() external payable stillOpen {
     mappingYes[msg.sender] += msg.value;
     balanceYes += msg.value;
   }
 
-  function buyNo() external payable stillOpen() {
+  function buyNo() external payable stillOpen {
     mappingNo[msg.sender] += msg.value;
     balanceNo += msg.value;
   }
 
   // Should be called by Owner when goalMaturity is achieved
-  function close() external onlyOwner() {
+  function close() external onlyOwner {
     closed = true;
   }
 
   // Should be called by Owner if the proposal is canceled
-  function cancel() external onlyOwner() {
+  function cancel() external onlyOwner {
     canceled = true;
   }
 
@@ -88,6 +80,5 @@ contract FutarchyProposal is Ownable {
       (bool successNo, ) = payable(msg.sender).call{value: reward}("");
       require(successNo, "Claiming rewards failed");
     }
-
   }
 }
