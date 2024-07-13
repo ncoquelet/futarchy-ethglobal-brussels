@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 // Chakra UI
 import { Button, ButtonGroup } from '@chakra-ui/react'
+import { extendTheme } from "@chakra-ui/react"
 
 // Wagmi & RainbowKit
 import { ConnectButton, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
@@ -24,6 +25,12 @@ import { NextIntlClientProvider } from "next-intl";
 
 const inter = Inter({ subsets: ["latin"] });
 const timeZone = "Europe/Paris";
+
+const theme = extendTheme({
+  colors: {
+    darkblue: '#2730FF'
+  },
+})
 
 export default function RootLayout({
   children,
@@ -59,7 +66,7 @@ export default function RootLayout({
           <WagmiConfig config={wagmiConfig}>
             <RainbowKitProvider chains={chains} modalSize="compact">
               <CacheProvider>
-                <ChakraProvider
+                <ChakraProvider theme={theme}
                   toastOptions={{ defaultOptions: { isClosable: true } }}
                 >
                   <NextIntlClientProvider locale="en" timeZone={timeZone}>

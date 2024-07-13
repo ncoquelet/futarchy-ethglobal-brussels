@@ -32,7 +32,7 @@
     "truncate-eth-address": "^1.0.2",
     "typescript": "5.2.2",
     "viem": "^2.17.3",
-    "wagmi": "^2.10.10"
+    "wagmi": "^1.4.5"
   },
   "devDependencies": {
     "eslint": "^8.53.0",
