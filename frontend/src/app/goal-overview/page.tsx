@@ -20,7 +20,7 @@ export default function GoalOverview() {
           <h2>Motivation, Goal</h2>
           <p>Complete description of the goal</p>
           <h2>Rules</h2>
-          <p>If my city's CO2 emissions reduce reduce by <=1%, voters on YES win.</p>
+          <p>If my city's CO2 emissions reduce reduce by =1%, voters on YES win.</p>
           <p>If not, voters on NO win.</p>
 
 
