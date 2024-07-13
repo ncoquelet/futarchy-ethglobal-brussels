@@ -60,11 +60,11 @@ export default function GoalOverview() {
               </div>
             </div>
             <div></div>
-            <div style={{backgroundColor: '#D4E5FA', margin: '1rem' }}>
+            <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
               13 ETH is staked in the pool
             </div>
           </div>
-          <div className="proposal-card">
+          <div className="proposal-card inactive-card">
             <p>Proposal 2</p>
             <h2>Increase bike lanes</h2>
             <div style={{display: 'flex;'}}>
@@ -76,23 +76,23 @@ export default function GoalOverview() {
               </div>
             </div>
             <div></div>
-            <div style={{backgroundColor: '#D4E5FA', margin: '1rem' }}>
+            <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
               13 ETH is staked in the pool
             </div>
           </div>
-          <div className="proposal-card">
+          <div className="proposal-card inactive-card">
             <p>Proposal 3</p>
             <h2>Increase bike lanes</h2>
             <div style={{display: 'flex;'}}>
-              <div style={{width: '50%', margin: '1rem' }}>
+              <div style={{width: '50%', margin: '1rem'}}>
                 YES
               </div>
-              <div style={{width: '50%', margin: '1rem' }}>
+              <div style={{width: '50%', margin: '1rem'}}>
                 NO
               </div>
             </div>
             <div></div>
-            <div style={{backgroundColor: '#D4E5FA', margin: '1rem' }}>
+            <div style={{backgroundColor: '#D4E5FA', borderRadius:'10px', paddingLeft: '1rem', paddingRight: '1rem', paddingTop:'0.5rem', paddingBottom:'0.5rem' }}>
               13 ETH is staked in the pool
             </div>
           </div>
