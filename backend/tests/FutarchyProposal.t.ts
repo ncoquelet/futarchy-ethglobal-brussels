@@ -7,21 +7,23 @@ describe('Futarchy Proposal', () => {
   async function deployProposal() {
     // Get the ContractFactory and Signers here.
     const FutarchyProposal = await ethers.getContractFactory('FutarchyProposal')
-    const [owner, parentContract, alice] = await ethers.getSigners()
+    const [owner, parentContract, alice, oracle] = await ethers.getSigners()
 
     const proposal = await ethers.deployContract('FutarchyProposal', [
       parentContract.address,
       'description',
+      oracle.address,
     ])
 
-    return { FutarchyProposal, proposal, owner, parentContract, alice }
+    return { FutarchyProposal, proposal, owner, parentContract, alice, oracle }
   }
 
   describe('Deployment', () => {
     it('should set the owner', async () => {
-      const { proposal, parentContract } = await loadFixture(deployProposal)
+      const { proposal, parentContract, oracle } = await loadFixture(deployProposal)
       expect(await proposal.owner()).to.equal(parentContract.address)
       expect(await proposal.description()).to.equal('description')
+      expect(await proposal.oracle()).to.equal(oracle.address)
     })
   })
 
@@ -65,12 +67,12 @@ describe('Futarchy Proposal', () => {
     it('should close proposal', async () => {
       const { proposal, parentContract } = await loadFixture(deployProposal)
 
-      await expect(proposal.close()).to.be.emit(proposal, 'ProposalClosed')
+      await expect(proposal.connect(parentContract).tallyGoal(true)).to.be.emit(proposal, 'ProposalClosed')
     })
     it('should revert close proposal if not owner', async () => {
-      const { proposal, parentContract } = await loadFixture(deployProposal)
+      const { proposal, parentContract, alice } = await loadFixture(deployProposal)
 
-      await expect(proposal.close()).to.be.revertedWithCustomError(
+      await expect(proposal.connect(alice).tallyGoal(true)).to.be.revertedWithCustomError(
         proposal,
         'OwnableUnauthorizedAccount'
       )
@@ -79,7 +81,7 @@ describe('Futarchy Proposal', () => {
       const { proposal, parentContract, alice } = await loadFixture(
         deployProposal
       )
-      await proposal.connect(parentContract).close()
+      await proposal.connect(parentContract).tallyGoal(true)
       await expect(
         proposal
           .connect(alice)
@@ -90,7 +92,7 @@ describe('Futarchy Proposal', () => {
       const { proposal, parentContract, alice } = await loadFixture(
         deployProposal
       )
-      await proposal.connect(parentContract).close()
+      await proposal.connect(parentContract).tallyGoal(true)
       await expect(
         proposal.connect(alice).buyNo({ value: ethers.parseUnits('1', 'gwei') })
       ).to.be.revertedWithoutReason()
