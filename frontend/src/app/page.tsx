@@ -2,16 +2,46 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import ProposalCard from '../components/ProposalCard';
+import { ethers } from 'ethers'
 
 // Chakra UI
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 export default function Home() {
-  const proposals = [
-    "{Proposal title Proposal title Proposal title Proposal title}",
-    "{Proposal title Proposal title Proposal title Proposal title}",
-    "{Proposal title Proposal title Proposal title Proposal title}"
+
+  // const FutarchyGovernance = await ethers.getContractFactory(
+  //   'FutarchyGovernance'
+  // )
+
+  //get the goalsAddress
+  const goalsAddress = ['address1', 'address2', 'address3']
+
+  //get the goals from address
+  const goals = [
+    {title:'goal1', state: 'trading period', votingDeadLine: '200000', owner: 'owner1', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]},
+    {title:'goal2', state: 'trading period', votingDeadLine: '200000', owner: 'owner2', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]},
+    {id: 'id3', title:'goal3', state: 'trading period', votingDeadLine: '200000', owner: 'owner1', proposals: [{title: 'proposal 1 title'}, {title: 'proposal 2 title'}, {title: 'proposal 3 title'}]}
   ];
+
+  const cardList = goals.map(goal => 
+  <div className="card-container" key={goal.id}>    
+    <Link href={{
+      pathname: '/goal-overview',
+      query: { goalId: goal.id } // the data
+    }}>
+      <ProposalCard
+        goal={goal}
+        votingDeadline={goal.votingDeadLine}
+        proposals={
+          goal.proposals
+        }
+      />
+    </Link>
+  </div>
+  );
+
+
+
   return (
 
     <main className="p-4 font-satoshi">
@@ -38,42 +68,7 @@ export default function Home() {
       <div className="section">
         <h1>New goals</h1>
         <div className="card-list">
-          <div className="card-container">
-            <Link href="/goal-overview">
-              <ProposalCard
-                title="Title Title Title Title Title Title Title Title Title Title Title ?"
-                tradingPeriod="05.07.2024 ~ 05.08.2024"
-                proposals={proposals}
-              />
-            </Link>
-          </div>
-          <div className="card-container">
-            <Link href="/goal-overview">
-              <ProposalCard
-                title="Title Title Title Title Title Title Title Title Title Title Title ?"
-                tradingPeriod="05.07.2024 ~ 05.08.2024"
-                proposals={proposals}
-              />
-            </Link>
-          </div>
-          <div className="card-container">
-            <Link href="/goal-overview">
-              <ProposalCard
-                title="Title Title Title Title Title Title Title Title Title Title Title ?"
-                tradingPeriod="05.07.2024 ~ 05.08.2024"
-                proposals={proposals}
-              />
-            </Link>
-          </div>
-          <div className="card-container">
-            <Link href="/goal-overview">
-              <ProposalCard
-                title="Title Title Title Title Title Title Title Title Title Title Title ?"
-                tradingPeriod="05.07.2024 ~ 05.08.2024"
-                proposals={proposals}
-              />
-            </Link>
-          </div>
+          {cardList}
         </div>
       </div>
     </main>

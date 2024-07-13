@@ -1,6 +1,7 @@
 "use client";
 
 import { Inter } from "next/font/google";
+import Link from 'next/link'
 
 // Chakra UI
 import { Button, ButtonGroup } from '@chakra-ui/react'
@@ -66,7 +67,11 @@ export default function RootLayout({
                       <div className="header">
                         <div style={{display: 'flex'}}>
                           <div>
-                            <Button colorScheme='blue' size='sm'>Home</Button>
+                            <Button colorScheme='blue' size='sm'>
+                              <Link href="/">
+                                Home
+                              </Link>
+                            </Button>
                           </div>
                           <div style={{marginLeft: '2rem'}}>
                             <Button colorScheme='blue' size='sm'>Profile</Button>

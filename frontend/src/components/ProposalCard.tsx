@@ -1,12 +1,12 @@
 import { Box, Text, Stack } from '@chakra-ui/react';
 
 interface ProposalCardProps {
-  title: string;
-  tradingPeriod: string;
-  proposals: string[];
+  goal: any;
+  proposals: any[];
+  votingDeadline: string;
 }
 
-const ProposalCard: React.FC<ProposalCardProps> = ({ title, tradingPeriod, proposals }) => {
+const ProposalCard: React.FC<ProposalCardProps> = ({ goal, proposals, votingDeadline }) => {
   return (
     <Box
       borderWidth="1px"
@@ -19,13 +19,13 @@ const ProposalCard: React.FC<ProposalCardProps> = ({ title, tradingPeriod, propo
     >
       <Stack spacing={3}>
         <Text fontWeight="bold" fontSize="lg">
-          {title}
+          {goal.title}
         </Text>
         <Text fontSize="sm">
-          Trading: {tradingPeriod}
+          State: {goal.state}
         </Text>
         <Text fontWeight="bold">
-          3 Proposals
+          {proposals.length} Proposals
         </Text>
         {proposals.map((proposal, index) => (
           <Box
@@ -34,7 +34,7 @@ const ProposalCard: React.FC<ProposalCardProps> = ({ title, tradingPeriod, propo
             p="4"
             borderRadius="md"
           >
-            {proposal}
+            {proposal.title}
           </Box>
         ))}
       </Stack>

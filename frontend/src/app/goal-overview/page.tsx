@@ -4,23 +4,43 @@ import Image from 'next/image'
 
 import { Progress } from '@chakra-ui/react'
 
+import { useRouter } from 'next/router'
+
 // Chakra UI
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 export default function GoalOverview() {
+
+  const router = useRouter();
+  const goalId = router.query.goalId;
+
+  const goal = {
+    id: 'id1', 
+    title:'goal1', 
+    state: 'trading period', 
+    votingDeadLine: '200000', 
+    owner: 'owner1',
+    proposals: [
+      {title: 'proposal 1 title'}, 
+      {title: 'proposal 2 title'}, 
+      {title: 'proposal 3 title'}
+    ],
+    overview: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?'
+  }
+
   return (
     <div className="font-satoshi">
       <div style={{marginLeft: '8rem', marginRight: '8rem', marginBottom: '2rem;'}} >
         <h3>category: ecology</h3>
-        <h3>state: actif</h3>
-        <h1>Reduce my city's CO2 emissions by 1% in one year</h1>
-        <h3>proposed by: 0x456787456789865678985678</h3>
+        <h3>state: {goal.state}</h3>
+        <h1>{goal.title}</h1>
+        <h3>proposed by: <span style={{fontWeight: '400'}}>{goal.owner}</span></h3>
 
         <div style={{display: 'flex'}}>
           <div style={{flex: '0 0 65%', paddingRight: '15rem'}}>
             <div style={{marginTop: '2rem'}}>
               <h2>Overview</h2>
-              <h3>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</h3>
+              <h3>{goal.overview}</h3>
               {/* <h2>Motivation, Goal</h2>
               <p>Complete description of the goal</p> */}
             </div>
