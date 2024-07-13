@@ -56,7 +56,7 @@ describe('Futarchy Goal', () => {
 
       await goal.connect(owner).createProposal('desc');
       await expect(
-        goal.connect(owner).cancelCurrentProposal()
+        goal.connect(owner).endProposalVoting()
       ).to.be.revertedWith('Time is not over')
     })
 
@@ -73,7 +73,7 @@ describe('Futarchy Goal', () => {
 
       // Mine un nouveau bloc pour appliquer le changement de temps
       await ethers.provider.send("evm_mine", []);
-      await goal.connect(owner).cancelCurrentProposal()
+      await goal.connect(owner).endProposalVoting()
 
       expect(await goal.currentProposal()).to.equal(initialProposal + BigInt(1))
     })

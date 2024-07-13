@@ -50,12 +50,14 @@ contract FutarchyGoal is Ownable {
     return proposals[_proposalId];
   }
 
-  // Should be called by owner to cancel a proposal that was not voted.
-  function cancelCurrentProposal() external onlyOwner() timeStillRunning(votingDeadline) {
-    FutarchyProposal(proposals[currentProposal]).cancel();
-    if (proposals.length > currentProposal) {
-      currentProposal++;
-      startTime = block.timestamp;
+  // Should be called by owner to end a vote.
+  function endProposalVoting() external onlyOwner() timeStillRunning(votingDeadline) {
+    bool isAccepted = FutarchyProposal(proposals[currentProposal]).endVoting();
+    if (!isAccepted) {
+      if (proposals.length > currentProposal) {
+        currentProposal++;
+        startTime = block.timestamp;
+      }
     }
   } 
 
