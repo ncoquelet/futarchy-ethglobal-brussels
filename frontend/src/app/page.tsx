@@ -46,9 +46,11 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <Button bg="white" color="customBlue.100" size="md">
-              <Link href="/goal-create">New goal</Link>
-            </Button>
+            <Link href="/goal-create">
+              <Button bg="white" color="customBlue.100" size="md">
+                New goal
+              </Button>
+            </Link>
           </div>
         </div>
         <div
