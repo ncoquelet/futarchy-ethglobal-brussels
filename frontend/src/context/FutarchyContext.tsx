@@ -68,6 +68,10 @@ export type Proposal = {
   balanceYes: bigint;
   balanceNo: bigint;
   goalAchieved: boolean;
+  title: string;
+  overview: string;
+  rules: string;
+  externalLink: string;
 };
 
 export const FutarchyProvider = ({ children }: PropsWithChildren) => {

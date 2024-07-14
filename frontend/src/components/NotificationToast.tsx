@@ -1,10 +1,4 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCheckCircle,
-  faTimes,
-  faExclamationCircle,
-} from '@fortawesome/pro-solid-svg-icons';
 import { useEffect } from 'react';
 
 // Notification Toast using framer-motion
@@ -34,7 +28,7 @@ export default function NotificationToast({
   }, [show, onClose]);
 
   // Determine the icon and colors based on the type
-  const icon = type === 'success' ? faCheckCircle : faExclamationCircle;
+  //const icon = type === 'success' ? faCheckCircle : faExclamationCircle;
   const textColor = type === 'success' ? 'text-green-400' : 'text-red-400';
 
   return (
@@ -54,10 +48,7 @@ export default function NotificationToast({
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
-                    <FontAwesomeIcon
-                      icon={icon}
                       className={`h-6 w-6 ${textColor}`}
-                    />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className={`text-sm font-medium ${textColor}`}>
@@ -76,7 +67,6 @@ export default function NotificationToast({
                       onClick={onClose}
                     >
                       <span className="sr-only">Close</span>
-                      <FontAwesomeIcon icon={faTimes} className="h-5 w-5" />
                     </button>
                   </div>
                 </div>
