@@ -21,6 +21,10 @@ contract FutarchyGoal is Ownable {
     address addr;
     string remoteCid;
     address[] proposals;
+    uint goalMaturity;
+    uint goalValue;
+    uint votingDeadline;
+    address currentProposal;
     uint startTime;
   }
 
@@ -65,6 +69,10 @@ contract FutarchyGoal is Ownable {
     goal.addr = address(this);
     goal.remoteCid = "";
     goal.proposals = proposals;
+    goal.goalMaturity = goalMaturity;
+    goal.goalValue = goalValue;
+    goal.votingDeadline = votingDeadline;
+    goal.currentProposal = proposals[currentProposal];
     goal.startTime = startTime;
     return goal;
   }
