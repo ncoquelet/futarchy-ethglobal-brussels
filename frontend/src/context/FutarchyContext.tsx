@@ -6,9 +6,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Address, parseAbiItem } from "viem";
+import { Address, etherUnits, parseAbiItem } from "viem";
 import { GOVERNANCE_CONTRACT_ADDRESS } from "../app/config";
-import fetch, { Response } from "node-fetch";
 
 // Abis
 import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
@@ -31,6 +30,10 @@ type FutarchyContextProps = {
     goalMaturity: bigint
   ): void;
   createProposal(cid: string): void;
+  buyYes(proposal: Address, quantity: number): void;
+  buyNo(proposal: Address, quantity: number): void;
+  endProposalVoting(proposal: Address): void;
+  goalAchieved(proposal: Address, quantity: number): void;
 };
 
 const FutarchyContext = createContext<FutarchyContextProps>({
@@ -39,6 +42,10 @@ const FutarchyContext = createContext<FutarchyContextProps>({
   goals: [],
   createGoal: () => {},
   createProposal: () => {},
+  buyYes: () => {},
+  buyNo: () => {},
+  endProposalVoting: () => {},
+  goalAchieved: () => {},
 });
 
 export type Goal = {
@@ -113,9 +120,8 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             proposals: Array<Address>;
             startTime: bigint;
           };
-          const fetch = require("node-fetch");
           let goalMetadata: any = {};
-          fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}`)
+          fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`)
             .then((response: Response) => {
               if (response.ok) return (goalMetadata = response.json());
               throw new Error("Network response was not ok.");
@@ -141,7 +147,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
               let proposalMetadata: any = {};
               fetch(
-                `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}`
+                `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}/`
               )
                 .then((response: Response) => {
                   if (response.ok) return (proposalMetadata = response.json());
@@ -206,6 +212,38 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const endProposalVoting = async (goal: Address) => {
+    try {
+      const { hash } = await writeContract({
+        address: goal,
+        abi: goalAbi,
+        functionName: "endProposalVoting",
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Success", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("Error occured in console", ToastType.ERROR);
+      console.log(error);
+    }
+  };
+
+  const goalAchieved = async (goal: Address) => {
+    try {
+      const { hash } = await writeContract({
+        address: goal,
+        abi: goalAbi,
+        functionName: "goalAchieved",
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Success", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("Error occured in console", ToastType.ERROR);
+      console.log(error);
+    }
+  };
+
   const createProposal = async (cid: string) => {
     console.log("Creating proposal for" + goalAddress);
     try {
@@ -217,7 +255,41 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
       });
 
       await waitForTransaction({ hash });
-      showNotification("Voter registered", ToastType.SUCCESS);
+      showNotification("Success", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("Error occured in console", ToastType.ERROR);
+      console.log(error);
+    }
+  };
+
+  const buyYes = async (proposal: Address, quantity: number) => {
+    try {
+      const { hash } = await writeContract({
+        address: proposal,
+        abi: proposalAbi,
+        functionName: "buyYes",
+        value: BigInt(quantity),
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Success", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("Error occured in console", ToastType.ERROR);
+      console.log(error);
+    }
+  };
+
+  const buyNo = async (proposal: Address, quantity: number) => {
+    try {
+      const { hash } = await writeContract({
+        address: proposal,
+        abi: proposalAbi,
+        functionName: "buyNo",
+        value: BigInt(quantity),
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Success", ToastType.SUCCESS);
     } catch (error) {
       showNotification("Error occured in console", ToastType.ERROR);
       console.log(error);
@@ -232,6 +304,10 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
         goals,
         createGoal,
         createProposal,
+        buyYes,
+        buyNo,
+        endProposalVoting,
+        goalAchieved,
       }}
     >
       {children}
