@@ -106,12 +106,11 @@ export default function GoalOverview() {
             </div>
             <div style={{marginTop: '2rem'}}>
               <h2>Rules</h2>
-              <h3>If my city's CO2 emissions reduce reduce by =1%, voters on YES win.</h3>
-              <h3>If not, voters on NO win.</h3>
+              <h3>{goal.rules}</h3>
             </div>
             <div style={{marginTop: '2rem'}}>
               <h2>External link</h2>
-              <h3>getabike.com</h3>
+              <h3>{goal.externalLinks}</h3>
             </div>
           </div>
           <div style={{flex: '0 0 35%'}}>
@@ -146,6 +145,15 @@ export default function GoalOverview() {
         </div>
         <div className="proposal-card-list">
           {proposalList}
+          <div style={{marginBottom: "6rem"}}>
+            <Link
+              href={{
+                pathname: "/proposal-create"
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 -960 960 960" width="60px" fill="#e8eaed"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Z"/></svg>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
