@@ -17,6 +17,13 @@ contract FutarchyGoal is Ownable {
   uint public votingDeadline;
   bool public demo;
 
+  struct Goal {
+    address addr;
+    string remoteCid;
+    address[] proposals;
+    uint startTime;
+  }
+
   modifier timeStillRunning(uint _time) {
     require((block.timestamp > startTime + _time) || demo, "Time is not over");
     _;
@@ -51,6 +58,15 @@ contract FutarchyGoal is Ownable {
 
   function getProposal(uint _proposalId) external view returns (address) {
     return proposals[_proposalId];
+  }
+
+  function getGoal() public view returns (Goal memory) {
+    Goal memory goal;
+    goal.addr = address(this);
+    goal.remoteCid = "";
+    goal.proposals = proposals;
+    goal.startTime = startTime;
+    return goal;
   }
 
   // Should be called by owner to end a vote.
