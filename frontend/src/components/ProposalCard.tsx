@@ -1,12 +1,16 @@
-import { Box, Text, Stack } from '@chakra-ui/react';
+import { Box, Text, Stack } from "@chakra-ui/react";
 
 interface ProposalCardProps {
   goal: any;
   proposals: any[];
-  votingDeadline: string;
+  votingDeadline: number;
 }
 
-const ProposalCard: React.FC<ProposalCardProps> = ({ goal, proposals, votingDeadline }) => {
+const ProposalCard: React.FC<ProposalCardProps> = ({
+  goal,
+  proposals,
+  votingDeadline,
+}) => {
   return (
     <Box
       borderWidth="1px"
@@ -21,19 +25,10 @@ const ProposalCard: React.FC<ProposalCardProps> = ({ goal, proposals, votingDead
         <Text fontWeight="bold" fontSize="lg">
           {goal.title}
         </Text>
-        <Text fontSize="sm">
-          State: {goal.state}
-        </Text>
-        <Text fontWeight="bold">
-          {proposals.length} Proposals
-        </Text>
+        <Text fontSize="sm">State: {goal.state}</Text>
+        <Text fontWeight="bold">{proposals.length} Proposals</Text>
         {proposals.map((proposal, index) => (
-          <Box
-            key={index}
-            bg="gray.100"
-            p="4"
-            borderRadius="md"
-          >
+          <Box key={index} bg="gray.100" p="4" borderRadius="md">
             {proposal.title}
           </Box>
         ))}

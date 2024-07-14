@@ -1,17 +1,21 @@
 "use client";
 
+import { useFutarchy } from "@/context/FutarchyContext";
 import { Box, Button, FormControl, FormLabel, Input, Select, Textarea, VStack, HStack } from "@chakra-ui/react";
 
 export default function ProposalForm() {
 
-  function submit(formData: any) {
-    console.log(formData)
-    console.log('description: ', formData.get('description'))
-    console.log('goalValue: ', formData.get('goalValue'))
-    console.log('votingDeadline: ', formData.get('votingDeadline'))
-    console.log('goalMaturity: ', formData.get('goalMaturity'))
-  }
+  const {createGoal} = useFutarchy();
 
+  function submit(formData: any) {
+
+    const description =  formData.get('description');
+    const goalValue = formData.get('goalValue');
+    const votingDeadline = formData.get('votingDeadline');
+    const goalMaturity = formData.get('goalMaturity');
+
+    createGoal(description, goalValue, votingDeadline, goalMaturity);
+  }
 
   return (
     <form action={submit}>
