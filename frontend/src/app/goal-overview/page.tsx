@@ -18,6 +18,8 @@ import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Goal, useFutarchy } from "@/context/FutarchyContext";
 
 export default function GoalOverview() {
+  const { buyYes, buyNo } = useFutarchy();
+
   const searchParams = useSearchParams();
   const goalAddress = searchParams.get("goalAddress");
 
@@ -68,7 +70,7 @@ export default function GoalOverview() {
             minHeight: "10rem",
           }}
         >
-          <div>
+          <div onClick={(e) => buyYes(proposal.addr, 1)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="60px"
@@ -94,7 +96,7 @@ export default function GoalOverview() {
             minHeight: "10rem",
           }}
         >
-          <div>
+          <div onClick={(e) => buyNo(proposal.addr, 1)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="60px"
