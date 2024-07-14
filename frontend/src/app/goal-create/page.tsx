@@ -17,9 +17,28 @@ import lighthouse from "@lighthouse-web3/sdk";
 import { IPFS_API_KEY } from "../config";
 import { title } from "process";
 
-export default function ProposalForm() {
+export default function GoalForm() {
   const { createGoal } = useFutarchy();
   const apiKey: string = IPFS_API_KEY || "";
+
+  const convertToSeconds = (value: string) => {
+    switch (value) {
+      case "5d":
+        return 5 * 24 * 60 * 60;
+      case "10d":
+        return 10 * 24 * 60 * 60;
+      case "1m":
+        return 30 * 24 * 60 * 60;
+      case "3m":
+        return 3 * 30 * 24 * 60 * 60;
+      case "6m":
+        return 6 * 30 * 24 * 60 * 60;
+      case "1y":
+        return 12 * 30 * 24 * 60 * 60;
+      default:
+        return 0;
+    }
+  };
 
   async function submit(formData: any) {
     const goalMetadata = {
@@ -28,6 +47,10 @@ export default function ProposalForm() {
       rules: formData.get("rules"),
       externalLink: formData.get("externalLink"),
     };
+    const votingDeadline = BigInt(
+      convertToSeconds(formData.get("votingDeadline"))
+    );
+    const goalMaturity = BigInt(convertToSeconds(formData.get("goalMaturity")));
     const response = await lighthouse.uploadText(
       JSON.stringify(goalMetadata),
       apiKey
@@ -35,8 +58,6 @@ export default function ProposalForm() {
     const cid = response.data.Hash;
 
     const goalValue = BigInt(Number(formData.get("goalValue")));
-    const votingDeadline = BigInt(Number(formData.get("votingDeadline")));
-    const goalMaturity = BigInt(Number(formData.get("goalMaturity")));
 
     createGoal(cid, goalValue, votingDeadline, goalMaturity);
   }
@@ -51,15 +72,6 @@ export default function ProposalForm() {
       >
         <h2 style={{ marginBottom: "4rem" }}>Make a goal</h2>
         <VStack spacing={4} align="stretch">
-          {/* <FormControl>
-            <FormLabel>Category</FormLabel>
-            <Select placeholder="Select category">
-              <option value="ecologic">Ecologic</option>
-              <option value="politic">Politic</option>
-              <option value="economic">Economic</option>
-            </Select>
-          </FormControl> */}
-
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>Title</FormLabel>
             <Input
@@ -83,12 +95,20 @@ export default function ProposalForm() {
 
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>Trading phase duration</FormLabel>
-            <Input name="votingDeadline" type="number" />
+            <Select name="votingDeadline" placeholder="Select duration">
+              <option value="5d">5 days</option>
+              <option value="10d">10 days</option>
+              <option value="1m">1 month</option>
+            </Select>
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>Testing phase duration</FormLabel>
-            <Input name="goalMaturity" type="number" />
+            <Select name="goalMaturity" placeholder="Select duration">
+              <option value="3m">3 months</option>
+              <option value="6m">6 months</option>
+              <option value="1y">1 year</option>
+            </Select>
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>

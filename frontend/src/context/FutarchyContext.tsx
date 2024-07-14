@@ -25,11 +25,12 @@ type FutarchyContextProps = {
   isOwner: boolean;
   goals: Array<Goal>;
   createGoal(
-    description: string,
+    cid: string,
     goalValue: bigint,
     votingDeadline: bigint,
     goalMaturity: bigint
   ): void;
+  createProposal(cid: string): void;
 };
 
 const FutarchyContext = createContext<FutarchyContextProps>({
@@ -37,6 +38,7 @@ const FutarchyContext = createContext<FutarchyContextProps>({
   isOwner: false,
   goals: [],
   createGoal: () => {},
+  createProposal: () => {},
 });
 
 export type Goal = {
@@ -63,6 +65,7 @@ export type Proposal = {
 export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const contractAddress = GOVERNANCE_CONTRACT_ADDRESS as Address;
   console.log(`layout contractAddress ${contractAddress}`);
+  const { goalAddress } = useParams();
 
   // connection
   const publicClient = usePublicClient();
@@ -87,6 +90,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const isOwner = address! && address === owner; // Is the current user the owner of the contract ?
 
   const [goals, setGoals] = useState<Array<Goal>>([]);
+  const [proposals, setProposals] = useState<Array<Proposal>>([]);
 
   useEffect(() => {
     const fetchGoals = async () => {
@@ -133,12 +137,35 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
               })) as {
                 addr: Address;
                 status: string;
+                remoteCid: string;
                 balanceYes: bigint;
                 balanceNo: bigint;
                 goalAchieved: boolean;
               };
 
-              return { ...proposal } as Proposal;
+              let proposalMetadata: any = {};
+              fetch(
+                `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}`
+              )
+                .then((response: Response) => {
+                  if (response.ok) return response.buffer();
+                  throw new Error("Network response was not ok.");
+                })
+                .then((buffer: Buffer) => {
+                  proposalMetadata = buffer.toJSON();
+                  console.log(proposalMetadata);
+                })
+                .catch((error: Error) => {
+                  console.error("Failed to save the file:", error);
+                });
+
+              return {
+                ...proposal,
+                title: proposalMetadata.title,
+                overview: proposalMetadata.overview,
+                rules: proposalMetadata.rules,
+                externalLink: proposalMetadata.externalLink,
+              } as Proposal;
             })
           );
 
@@ -167,7 +194,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   }, [contractAddress]);
 
   const createGoal = async (
-    description: string,
+    cid: string,
     goalValue: bigint,
     votingDeadline: bigint,
     goalMaturity: bigint
@@ -177,7 +204,24 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
         address: contractAddress as Address,
         abi: governanceAbi,
         functionName: "createGoal",
-        args: ["test", goalMaturity, goalValue, votingDeadline, true],
+        args: [cid, goalMaturity, goalValue, votingDeadline, true],
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Voter registered", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("This address is already registered", ToastType.ERROR);
+    }
+  };
+
+  const createProposal = async (cid: string) => {
+    console.log("Creating proposal for" + goalAddress);
+    try {
+      const { hash } = await writeContract({
+        address: goalAddress as Address,
+        abi: goalAbi,
+        functionName: "createProposal",
+        args: [cid],
       });
 
       await waitForTransaction({ hash });
@@ -190,7 +234,13 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <FutarchyContext.Provider
-      value={{ contractAddress, isOwner, goals, createGoal }}
+      value={{
+        contractAddress,
+        isOwner,
+        goals,
+        createGoal,
+        createProposal,
+      }}
     >
       {children}
     </FutarchyContext.Provider>
