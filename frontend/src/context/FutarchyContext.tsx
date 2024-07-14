@@ -200,9 +200,9 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
       });
 
       await waitForTransaction({ hash });
-      showNotification("Voter registered", ToastType.SUCCESS);
+      showNotification("SUCCESS", ToastType.SUCCESS);
     } catch (error) {
-      showNotification("This address is already registered", ToastType.ERROR);
+      showNotification("ERROR", ToastType.ERROR);
     }
   };
 
