@@ -6,7 +6,7 @@ import lighthouse from '@lighthouse-web3/sdk';
 import { IPFS_API_KEY } from '../config';
 import { title } from "process";
 
-export default function ProposalForm() {
+export default function GoalForm() {
 
   const {createGoal} = useFutarchy();
   const apiKey: string = IPFS_API_KEY || "";

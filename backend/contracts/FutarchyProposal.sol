@@ -16,13 +16,14 @@ contract FutarchyProposal is Ownable {
 
   struct Proposal {
     address addr;
+    string remoteCid;
     ProposalStatus status;
     uint balanceYes;
     uint balanceNo;
     bool goalAchieved;
   }
 
-  string public description;
+  string public remoteCid;
   ProposalStatus status;
   bool public goalAchieved;
   uint public balanceYes;
@@ -40,14 +41,15 @@ contract FutarchyProposal is Ownable {
     _;
   }
 
-  constructor(address _owner, string memory _description) Ownable(_owner) {
-    description = _description;
+  constructor(address _owner, string memory _cid) Ownable(_owner) {
+    remoteCid = _cid;
     status = ProposalStatus.Waiting;
   }
 
   function getProposal() public view returns (Proposal memory) {
     Proposal memory proposal;
     proposal.addr = address(this);
+    proposal.remoteCid = remoteCid;
     proposal.status = status;
     proposal.balanceYes = balanceYes;
     proposal.balanceNo = balanceNo;

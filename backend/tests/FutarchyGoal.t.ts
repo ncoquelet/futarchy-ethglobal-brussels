@@ -23,7 +23,7 @@ describe('Futarchy Goal', () => {
     })
     it('constructor of goal should set attributes properly', async () => {
         const { goal } = await loadFixture(deployGoal)
-        expect(await goal.description()).to.equal('desc')
+        expect(await goal.remoteCid()).to.equal('desc')
         expect(await goal.goalMaturity()).to.equal(1000)
         expect(await goal.goalValue()).to.equal(20)
         expect(await goal.votingDeadline()).to.equal(100)
