@@ -139,7 +139,7 @@ export default function GoalOverview() {
         </div>
       </div>
       
-      <div style={{backgroundColor: '#25262A', minHeight: '28rem;', paddingLeft: '8rem', marginBottom: '2rem', paddingTop: '2rem'}}>
+      <div style={{backgroundColor: '#25262A', minHeight: '28rem', paddingLeft: '8rem', marginBottom: '2rem', paddingTop: '2rem'}}>
         <div style={{color: 'white', display: 'flex'}}>
           <span className="material-symbols-outlined">
             how_to_vote
