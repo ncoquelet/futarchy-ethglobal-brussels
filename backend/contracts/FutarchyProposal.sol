@@ -14,6 +14,14 @@ contract FutarchyProposal is Ownable {
     VoteClosed
   }
 
+  struct Proposal {
+    address addr;
+    ProposalStatus status;
+    uint balanceYes;
+    uint balanceNo;
+    bool goalAchieved;
+  }
+
   string public description;
   ProposalStatus status;
   bool public goalAchieved;
@@ -35,6 +43,16 @@ contract FutarchyProposal is Ownable {
   constructor(address _owner, string memory _description) Ownable(_owner) {
     description = _description;
     status = ProposalStatus.Waiting;
+  }
+
+  function getProposal() public view returns (Proposal memory) {
+    Proposal memory proposal;
+    proposal.addr = address(this);
+    proposal.status = status;
+    proposal.balanceYes = balanceYes;
+    proposal.balanceNo = balanceNo;
+    proposal.goalAchieved = goalAchieved;
+    return proposal;
   }
 
   function buyYes() external payable stillOpen {
