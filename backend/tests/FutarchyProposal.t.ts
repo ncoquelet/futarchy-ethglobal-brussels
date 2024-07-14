@@ -33,7 +33,7 @@ describe('Futarchy Proposal', () => {
         deployProposal
       )
       expect(await proposal.owner()).to.equal(parentContract.address)
-      expect(await proposal.description()).to.equal('description')
+      expect(await proposal.remoteCid()).to.equal('description')
     })
   })
 
