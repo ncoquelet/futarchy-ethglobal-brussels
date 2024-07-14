@@ -33,12 +33,12 @@ export default function ProposalForm() {
 
           <FormControl style={{marginTop:'1rem'}}>
             <FormLabel>Title</FormLabel>
-            <Input name="description" placeholder="Reduce my city's CO2 emissions by 10% in 1 year." />
+            <Input name="title" placeholder="Reduce my city's CO2 emissions by 10% in 1 year." />
           </FormControl>
 
           <FormControl style={{marginTop:'1rem'}}>
             <FormLabel>Overview</FormLabel>
-            <Textarea placeholder="This proposal aims to explore the potential environmental benefits of expanding the city's bike lane network by 20%..." />
+            <Textarea name="overview" placeholder="This proposal aims to explore the potential environmental benefits of expanding the city's bike lane network by 20%..." />
           </FormControl>
 
           <FormControl style={{marginTop:'1rem'}}>
@@ -56,24 +56,14 @@ export default function ProposalForm() {
             <Input name="goalMaturity" type="number"/>
           </FormControl>
 
-          {/* <FormControl>
-            <FormLabel>Motivation, Goal</FormLabel>
-            <Textarea placeholder="The primary motivation for this proposal is to address the growing concern over urban air pollution and climate change..." />
-          </FormControl> */}
-
-          {/* <FormControl>
-            <FormLabel>Details</FormLabel>
-            <Textarea placeholder="To achieve the proposed CO2 emission reduction, the following steps will be undertaken:..." />
-          </FormControl> */}
-
           <FormControl style={{marginTop:'1rem'}}>
             <FormLabel>Rules</FormLabel>
-            <Textarea placeholder="If my city's CO2 emissions reduce by <=1%, voters on Yes win. If my city's CO2 emissions reduce by >1%, voters on No win." />
+            <Textarea name="rules" placeholder="If my city's CO2 emissions reduce by <=1%, voters on Yes win. If my city's CO2 emissions reduce by >1%, voters on No win." />
           </FormControl>
 
           <FormControl style={{marginTop:'1rem'}}>
             <FormLabel>External link (Optional)</FormLabel>
-            <Input placeholder="www.bougezvousauvelo.fr" />
+            <Input name="externalLink" placeholder="www.bougezvousauvelo.fr" />
           </FormControl>
 
           <HStack justify="space-between" style={{marginTop:'3rem'}}>
