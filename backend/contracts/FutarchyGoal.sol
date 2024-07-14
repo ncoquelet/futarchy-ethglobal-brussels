@@ -10,7 +10,7 @@ contract FutarchyGoal is Ownable {
   address[] public proposals;
   address public oracle;
   uint public currentProposal;
-  string public description;
+  string public remoteCid;
   uint public startTime;
   uint public goalMaturity;
   uint public goalValue;
@@ -35,8 +35,8 @@ contract FutarchyGoal is Ownable {
 
   event ProposalAdded(uint _proposalId, address _proposalAddr);
 
-  constructor(string memory _description, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) Ownable(_owner) {
-    description = _description;
+  constructor(string memory _cid, address _owner, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) Ownable(_owner) {
+    remoteCid = _cid;
     oracle = address(new FutarchyOracle());
     goalMaturity = _goalMaturity;
     goalValue = _goalValue;
@@ -67,7 +67,7 @@ contract FutarchyGoal is Ownable {
   function getGoal() public view returns (Goal memory) {
     Goal memory goal;
     goal.addr = address(this);
-    goal.remoteCid = "";
+    goal.remoteCid = remoteCid;
     goal.proposals = proposals;
     goal.goalMaturity = goalMaturity;
     goal.goalValue = goalValue;
