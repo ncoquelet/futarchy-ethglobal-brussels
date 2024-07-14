@@ -25,10 +25,14 @@ type FutarchyContextProps = {
   isOwner: boolean;
   goals: Array<Goal>;
   createGoal(
-    description: string,
+    cid: string,
     goalValue: number,
     votingDeadline: number,
     goalMaturity: number
+  ): void;
+  proposals: Array<Proposal>;
+  createProposal(
+    cid: string
   ): void;
 };
 
@@ -37,6 +41,8 @@ const FutarchyContext = createContext<FutarchyContextProps>({
   isOwner: false,
   goals: [],
   createGoal: () => {},
+  proposals: [],
+  createProposal: () => {},
 });
 
 export type Goal = {
@@ -63,6 +69,7 @@ export type Proposal = {
 export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const contractAddress = GOVERNANCE_CONTRACT_ADDRESS as Address;
   console.log(`layout contractAddress ${contractAddress}`);
+  const {goalAddress} = useParams()
 
   // connection
   const publicClient = usePublicClient();
@@ -87,6 +94,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const isOwner = address! && address === owner; // Is the current user the owner of the contract ?
 
   const [goals, setGoals] = useState<Array<Goal>>([]);
+  const [proposals, setProposals] = useState<Array<Proposal>>([]);
 
   useEffect(() => {
     const fetchGoals = async () => {
@@ -159,6 +167,55 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
       setGoals(goals);
     };
 
+    const fetchProposals = async () => {
+      console.log("fetch Proposals");
+      const logs = await publicClient.getLogs({
+        address: goalAddress,
+        event: parseAbiItem("event ProposalAdded(uint _proposalId, address _proposalAddr)"),
+        fromBlock: BigInt(Number(0)),
+      });
+
+      const proposals = await Promise.all(
+        logs.map(async (log) => {
+          const proposal = (await publicClient.readContract({
+            address: log.args._proposalAddr!,
+            abi: proposalAbi,
+            functionName: "getProposal",
+          })) as {
+            addr : Address;
+            status : string;
+            remoteCid : string;
+            balanceYes : bigint;
+            balanceNo : bigint;
+            goalAchieved : boolean;
+          };
+          const fetch = require('node-fetch');
+          let proposalMetadata:any = {};
+          fetch(`https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}`)
+              .then((response: Response) => {
+                if (response.ok) return response.buffer();
+                throw new Error('Network response was not ok.');
+              })
+              .then((buffer: Buffer) => {
+                proposalMetadata = buffer.toJSON()
+                console.log(proposalMetadata)
+              })
+              .catch((error: Error) => {
+                console.error('Failed to save the file:', error);
+              });
+
+          return {
+            ...proposal,
+            title: proposalMetadata.title,
+            overview: proposalMetadata.overview,
+            rules: proposalMetadata.rules,
+            externalLink: proposalMetadata.externalLink,
+          } as Proposal;
+        })
+      );
+      setProposals(proposals);
+    };
+
     const intervalID = setInterval(fetchGoals, 3000);
 
     return () => {
@@ -167,7 +224,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   }, [contractAddress]);
 
   const createGoal = async (
-    description: string,
+    cid: string,
     goalValue: number,
     votingDeadline: number,
     goalMaturity: number
@@ -177,7 +234,26 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
         address: contractAddress as Address,
         abi: governanceAbi,
         functionName: "createGoal",
-        args: [description, goalMaturity, goalValue, votingDeadline, true],
+        args: [cid, goalMaturity, goalValue, votingDeadline, true],
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Voter registered", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("This address is already registered", ToastType.ERROR);
+    }
+  };
+
+  const createProposal = async (
+    cid: string
+  ) => {
+    console.log("Creating proposal for" + goalAddress)
+    try {
+      const { hash } = await writeContract({
+        address: goalAddress as Address,
+        abi: goalAbi,
+        functionName: "createProposal",
+        args: [cid],
       });
 
       await waitForTransaction({ hash });
@@ -189,7 +265,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <FutarchyContext.Provider
-      value={{ contractAddress, isOwner, goals, createGoal }}
+      value={{ contractAddress, isOwner, goals, createGoal, proposals, createProposal }}
     >
       {children}
     </FutarchyContext.Provider>
