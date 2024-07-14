@@ -6,6 +6,7 @@ import React, { useState } from "react";
 
 // Chakra UI
 import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Box, Skeleton, Stack } from "@chakra-ui/react";
 import { useFutarchy } from "@/context/FutarchyContext";
 
 export default function Home() {
@@ -76,7 +77,48 @@ export default function Home() {
       </div>
       <div className="section" style={{ marginBottom: "2rem" }}>
         <h1 style={{ marginTop: "1rem" }}>New goals</h1>
-        <div className="card-list">{cardList}</div>
+        <div className="card-list">
+          {goals.length > 0 ? (
+            cardList
+          ) : (
+            <div style={{display:'flex'}}>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p="6"
+                bg="white"
+                boxShadow="md"
+                style={{ minWidth: "20rem" }}
+                className="card-container"
+              >
+
+                <Stack spacing={3}>
+                  <Skeleton height='20px' />
+                  <Skeleton height='20px' />
+                  <Skeleton height='20px' />
+                </Stack>
+              </Box>
+              <Box
+                className="card-container"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p="6"
+                bg="white"
+                boxShadow="md"
+                style={{ minWidth: "20rem" }}
+              >
+
+                <Stack spacing={3}>
+                  <Skeleton height='20px' />
+                  <Skeleton height='20px' />
+                  <Skeleton height='20px' />
+                </Stack>
+              </Box>
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );

@@ -66,9 +66,9 @@ export default function RootLayout({
   const { chains, publicClient } = configureChains(
     [sepolia, hardhat, polygonMumbai],
     [
-      alchemyProvider({
-        apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
-      }),
+      // alchemyProvider({
+      //   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
+      // }),
       publicProvider(),
     ]
   );

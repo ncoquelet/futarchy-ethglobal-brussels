@@ -8,6 +8,7 @@ import {
 } from "react";
 import { Address, parseAbiItem } from "viem";
 import { GOVERNANCE_CONTRACT_ADDRESS } from "../app/config";
+import fetch, { Response } from "node-fetch";
 
 // Abis
 import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
@@ -40,7 +41,10 @@ const FutarchyContext = createContext<FutarchyContextProps>({
 
 export type Goal = {
   addr: Address;
-  description: string;
+  title: string;
+  overview: string;
+  rules: string;
+  externalLink: string;
   votingDeadline: number;
   proposals: Proposal[];
   currentProposal: Address;
@@ -105,6 +109,20 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             proposals: Array<Address>;
             startTime: bigint;
           };
+          const fetch = require("node-fetch");
+          let goalMetadata: any = {};
+          fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}`)
+            .then((response: Response) => {
+              if (response.ok) return response.buffer();
+              throw new Error("Network response was not ok.");
+            })
+            .then((buffer: Buffer) => {
+              goalMetadata = buffer.toJSON();
+              console.log(goalMetadata);
+            })
+            .catch((error: Error) => {
+              console.error("Failed to save the file:", error);
+            });
 
           const proposals = await Promise.all(
             goal.proposals.map(async (propAddr) => {
@@ -126,7 +144,10 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
           return {
             ...goal,
-            description: "",
+            title: goalMetadata.title,
+            overview: goalMetadata.overview,
+            rules: goalMetadata.rules,
+            externalLink: goalMetadata.externalLink,
             proposals: proposals,
             currentProposal: "0x",
             goalValue: 0,
@@ -138,7 +159,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
       setGoals(goals);
     };
 
-    const intervalID = setInterval(fetchGoals, 3000);
+    const intervalID = setInterval(fetchGoals, 10000);
 
     return () => {
       clearInterval(intervalID);

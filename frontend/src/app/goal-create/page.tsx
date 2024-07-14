@@ -1,6 +1,7 @@
 "use client";
 
 import { useFutarchy } from "@/context/FutarchyContext";
+
 import {
   Box,
   Button,
@@ -12,17 +13,32 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
+import lighthouse from "@lighthouse-web3/sdk";
+import { IPFS_API_KEY } from "../config";
+import { title } from "process";
 
 export default function ProposalForm() {
   const { createGoal } = useFutarchy();
+  const apiKey: string = IPFS_API_KEY || "";
 
-  function submit(formData: any) {
-    const description = formData.get("description");
+  async function submit(formData: any) {
+    const goalMetadata = {
+      title: formData.get("title"),
+      overview: formData.get("overview"),
+      rules: formData.get("rules"),
+      externalLink: formData.get("externalLink"),
+    };
+    const response = await lighthouse.uploadText(
+      JSON.stringify(goalMetadata),
+      apiKey
+    );
+    const cid = response.data.Hash;
+
     const goalValue = BigInt(Number(formData.get("goalValue")));
     const votingDeadline = BigInt(Number(formData.get("votingDeadline")));
     const goalMaturity = BigInt(Number(formData.get("goalMaturity")));
 
-    createGoal(description, goalValue, votingDeadline, goalMaturity);
+    createGoal(cid, goalValue, votingDeadline, goalMaturity);
   }
 
   return (
