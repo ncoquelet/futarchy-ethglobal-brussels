@@ -117,12 +117,8 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
           let goalMetadata: any = {};
           fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}`)
             .then((response: Response) => {
-              if (response.ok) return response.buffer();
+              if (response.ok) return (goalMetadata = response.json());
               throw new Error("Network response was not ok.");
-            })
-            .then((buffer: Buffer) => {
-              goalMetadata = buffer.toJSON();
-              console.log(goalMetadata);
             })
             .catch((error: Error) => {
               console.error("Failed to save the file:", error);
@@ -148,12 +144,8 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
                 `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}`
               )
                 .then((response: Response) => {
-                  if (response.ok) return response.buffer();
+                  if (response.ok) return (proposalMetadata = response.json());
                   throw new Error("Network response was not ok.");
-                })
-                .then((buffer: Buffer) => {
-                  proposalMetadata = buffer.toJSON();
-                  console.log(proposalMetadata);
                 })
                 .catch((error: Error) => {
                   console.error("Failed to save the file:", error);
