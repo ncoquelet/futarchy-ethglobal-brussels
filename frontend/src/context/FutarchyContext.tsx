@@ -18,6 +18,7 @@ import { waitForTransaction, writeContract } from "wagmi/actions";
 import { ToastType } from "@/components/ToastGpt";
 import { useNotification } from "./NotificationContext";
 import { log } from "console";
+import { useSearchParams } from 'next/navigation'
 
 type FutarchyContextProps = {
   contractAddress: Address;
@@ -72,7 +73,8 @@ export type Proposal = {
 export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const contractAddress = GOVERNANCE_CONTRACT_ADDRESS as Address;
   console.log(`layout contractAddress ${contractAddress}`);
-  const { goalAddress } = useParams();
+  const searchParams = useSearchParams();
+  const goalAddress = searchParams.get('goalAddress');
 
   // connection
   const publicClient = usePublicClient();
@@ -129,7 +131,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             .catch((error: Error) => {
               console.error("Failed to save the file:", error);
             });
-
+          console.log(goalMetadata)
           const proposals = await Promise.all(
             goal.proposals.map(async (propAddr) => {
               const proposal = (await publicClient.readContract({
@@ -245,7 +247,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   };
 
   const createProposal = async (cid: string) => {
-    console.log("Creating proposal for" + goalAddress);
+    console.log("Creating proposal for " + goalAddress);
     try {
       const { hash } = await writeContract({
         address: goalAddress as Address,
