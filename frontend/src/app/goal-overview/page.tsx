@@ -7,10 +7,15 @@ import { Progress } from '@chakra-ui/react'
 
 import { useSearchParams } from 'next/navigation'
 
+import { useFutarchy } from "@/context/FutarchyContext";
+
 // Chakra UI
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 export default function GoalOverview() {
+
+  const { buyYes } = useFutarchy();
+  const { buyNo } = useFutarchy();
 
   const searchParams = useSearchParams();
   const goalAddress = searchParams.get('goalAddress');
@@ -30,9 +35,9 @@ export default function GoalOverview() {
     votingDeadline: 10,
     goalMaturity: 1000000,
     proposals: [
-      {description: 'proposal 1 title'}, 
-      {description: 'proposal 2 title'}, 
-      {description: 'proposal 3 title'}
+      {description: 'proposal 1 title', address: '0xoieryvpezur'}, 
+      {description: 'proposal 2 title', address: '0xoieryvpezur'},  
+      {description: 'proposal 3 title', address: '0xoieryvpezur'}, 
     ],
     overview: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?'
   }
@@ -43,13 +48,13 @@ export default function GoalOverview() {
       <h2>{proposal.description}</h2>
       <div style={{display: 'flex', marginTop: '1rem'}}>
         <div style={{width: '50%', borderRadius: '10px', backgroundColor: '#8DF69D', display: 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', marginRight: '0.3rem', minHeight: '10rem'}}>
-          <div>
+          <div onClick={(e)=>buyYes(proposal.address, 1)}>
             <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 -960 960 960" width="60px" fill="#1DBF1A"><path d="m423.23-309.85 268.92-268.92L650-620.92 423.23-394.15l-114-114L267.08-466l156.15 156.15ZM480.07-100q-78.84 0-148.21-29.92t-120.68-81.21q-51.31-51.29-81.25-120.63Q100-401.1 100-479.93q0-78.84 29.92-148.21t81.21-120.68q51.29-51.31 120.63-81.25Q401.1-860 479.93-860q78.84 0 148.21 29.92t120.68 81.21q51.31 51.29 81.25 120.63Q860-558.9 860-480.07q0 78.84-29.92 148.21t-81.21 120.68q-51.29 51.31-120.63 81.25Q558.9-100 480.07-100Z"/></svg>
           </div>
           <h2>YES</h2>
         </div>
         <div style={{width: '50%', borderRadius: '10px', backgroundColor: '#FCCCCC', display: 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', marginLeft: '0.3rem', minHeight: '10rem'}}>
-          <div>
+          <div onClick={BuyNo("fake_address", 1)}>
             <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 -960 960 960" width="60px" fill="#FF6B6B"><path d="m336-293.85 144-144 144 144L666.15-336l-144-144 144-144L624-666.15l-144 144-144-144L293.85-624l144 144-144 144L336-293.85ZM480.07-100q-78.84 0-148.21-29.92t-120.68-81.21q-51.31-51.29-81.25-120.63Q100-401.1 100-479.93q0-78.84 29.92-148.21t81.21-120.68q51.29-51.31 120.63-81.25Q401.1-860 479.93-860q78.84 0 148.21 29.92t120.68 81.21q51.31 51.29 81.25 120.63Q860-558.9 860-480.07q0 78.84-29.92 148.21t-81.21 120.68q-51.29 51.31-120.63 81.25Q558.9-100 480.07-100Z"/>
             </svg>
           </div>
