@@ -5,8 +5,12 @@ import { Box, Button, FormControl, FormLabel, Input, Select, Textarea, VStack, H
 import lighthouse from '@lighthouse-web3/sdk';
 import { IPFS_API_KEY } from '../config';
 import { title } from "process";
+import { useSearchParams } from 'next/navigation'
 
 export default function ProposalForm() {
+
+  const searchParams = useSearchParams();
+  const goalAddress = searchParams.get('goalAddress');
 
   const {createProposal} = useFutarchy();
   const apiKey: string = IPFS_API_KEY || "";
