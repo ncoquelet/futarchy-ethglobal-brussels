@@ -32,15 +32,12 @@ export default function ProposalForm() {
 
   async function submit(formData: any) {
     const goalMetadata = { title: formData.get('title'), overview: formData.get('overview'), rules: formData.get('rules'), externalLink: formData.get('externalLink')}
-    const votingDeadline = convertToSeconds(formData.get('votingDeadline'));
-    const goalMaturity = convertToSeconds(formData.get('goalMaturity'));
     const response = await lighthouse.uploadText(JSON.stringify(goalMetadata), apiKey)
     const cid = response.data.Hash
 
     const goalValue = formData.get('goalValue');
-    
-
-    
+    const votingDeadline = convertToSeconds(formData.get('votingDeadline'));
+    const goalMaturity = convertToSeconds(formData.get('goalMaturity'));
 
     createGoal(cid, goalValue, votingDeadline, goalMaturity);
   }
