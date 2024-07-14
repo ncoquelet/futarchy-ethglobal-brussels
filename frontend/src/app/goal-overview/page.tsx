@@ -101,13 +101,17 @@ export default function GoalOverview() {
               <p>Complete description of the goal</p> */}
             </div>
             <div style={{marginTop: '2rem'}}>
+              <h2>Goal value</h2>
+              <h3>{goal.goalValue}%</h3>
+            </div>
+            <div style={{marginTop: '2rem'}}>
               <h2>Rules</h2>
               <h3>If my city's CO2 emissions reduce reduce by =1%, voters on YES win.</h3>
               <h3>If not, voters on NO win.</h3>
             </div>
             <div style={{marginTop: '2rem'}}>
-              <h2>Goal value</h2>
-              <h3>{goal.goalValue}%</h3>
+              <h2>External link</h2>
+              <h3>getabike.com</h3>
             </div>
           </div>
           <div style={{flex: '0 0 35%'}}>

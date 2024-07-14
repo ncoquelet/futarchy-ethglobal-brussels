@@ -99,7 +99,7 @@ export default function Home() {
           <div>
             <Button bg='white' color='customBlue.100' size='md'>
             <Link href='/goal-create'>
-              Test your goal
+              New goal
             </Link>
             </Button>
           </div>
