@@ -17,6 +17,7 @@ import { useAccount, useContractRead, usePublicClient } from "wagmi";
 import { waitForTransaction, writeContract } from "wagmi/actions";
 import { ToastType } from "@/components/ToastGpt";
 import { useNotification } from "./NotificationContext";
+import { log } from "console";
 
 type FutarchyContextProps = {
   contractAddress: Address;
@@ -24,9 +25,9 @@ type FutarchyContextProps = {
   goals: Array<Goal>;
   createGoal(
     description: string,
-    goalValue: number,
-    votingDeadline: number,
-    goalMaturity: number
+    goalValue: bigint,
+    votingDeadline: bigint,
+    goalMaturity: bigint
   ): void;
 };
 
@@ -146,22 +147,23 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
   const createGoal = async (
     description: string,
-    goalValue: number,
-    votingDeadline: number,
-    goalMaturity: number
+    goalValue: bigint,
+    votingDeadline: bigint,
+    goalMaturity: bigint
   ) => {
     try {
       const { hash } = await writeContract({
         address: contractAddress as Address,
         abi: governanceAbi,
         functionName: "createGoal",
-        args: [description, goalMaturity, goalValue, votingDeadline, true],
+        args: ["test", goalMaturity, goalValue, votingDeadline, true],
       });
 
       await waitForTransaction({ hash });
       showNotification("Voter registered", ToastType.SUCCESS);
     } catch (error) {
-      showNotification("This address is already registered", ToastType.ERROR);
+      showNotification("Error occured in console", ToastType.ERROR);
+      console.log(error);
     }
   };
 
