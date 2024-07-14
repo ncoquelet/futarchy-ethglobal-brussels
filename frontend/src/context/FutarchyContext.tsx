@@ -18,7 +18,7 @@ import { waitForTransaction, writeContract } from "wagmi/actions";
 import { ToastType } from "@/components/ToastGpt";
 import { useNotification } from "./NotificationContext";
 import { log } from "console";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 
 type FutarchyContextProps = {
   contractAddress: Address;
@@ -78,7 +78,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const contractAddress = GOVERNANCE_CONTRACT_ADDRESS as Address;
   console.log(`layout contractAddress ${contractAddress}`);
   const searchParams = useSearchParams();
-  const goalAddress = searchParams.get('goalAddress');
+  const goalAddress = searchParams.get("goalAddress");
 
   // connection
   const publicClient = usePublicClient();
@@ -126,16 +126,32 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             proposals: Array<Address>;
             startTime: bigint;
           };
+
           let goalMetadata: any = {};
-          fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`)
-            .then((response: Response) => {
-              if (response.ok) return (goalMetadata = response.json());
-              throw new Error("Network response was not ok.");
-            })
-            .catch((error: Error) => {
-              console.error("Failed to save the file:", error);
-            });
-          console.log(goalMetadata)
+          try {
+            const response = await fetch(
+              `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`
+            );
+            if (!response.ok) {
+              throw new Error(`Response status: ${response.status}`);
+            }
+
+            goalMetadata = await response.json();
+            console.log(goalMetadata);
+          } catch (error) {
+            console.error(error);
+          }
+
+          // let goalMetadata: any = {};
+          // fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`)
+          //   .then((response: Response) => {
+          //     if (response.ok) return (goalMetadata = response.json());
+          //     throw new Error("Network response was not ok.");
+          //   })
+          //   .catch((error: Error) => {
+          //     console.error("Failed to save the file:", error);
+          //   });
+          // console.log(goalMetadata)
           const proposals = await Promise.all(
             goal.proposals.map(async (propAddr) => {
               const proposal = (await publicClient.readContract({
@@ -152,16 +168,29 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
               };
 
               let proposalMetadata: any = {};
-              fetch(
-                `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}/`
-              )
-                .then((response: Response) => {
-                  if (response.ok) return (proposalMetadata = response.json());
-                  throw new Error("Network response was not ok.");
-                })
-                .catch((error: Error) => {
-                  console.error("Failed to save the file:", error);
-                });
+              try {
+                const response = await fetch(
+                  `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`
+                );
+                if (!response.ok) {
+                  throw new Error(`Response status: ${response.status}`);
+                }
+
+                goalMetadata = await response.json();
+                console.log(goalMetadata);
+              } catch (error) {
+                console.error(error);
+              }
+              // fetch(
+              //   `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}/`
+              // )
+              //   .then((response: Response) => {
+              //     if (response.ok) return (proposalMetadata = response.json());
+              //     throw new Error("Network response was not ok.");
+              //   })
+              //   .catch((error: Error) => {
+              //     console.error("Failed to save the file:", error);
+              //   });
 
               return {
                 ...proposal,
