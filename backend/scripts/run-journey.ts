@@ -31,7 +31,6 @@ async function main() {
     BigInt(60 * 60 * 24 * 14),
     true
   )
-  tx.wait()
 
   const addedGoalFilter = governance.filters.GoalAdded()
   const goalAddr = (await governance.queryFilter(addedGoalFilter))[0]
