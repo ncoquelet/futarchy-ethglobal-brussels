@@ -19,11 +19,14 @@ export default function GoalOverview() {
 
   const goal = {
     id: 'id1', 
+    addr: 'address test',
     description:'Reduce the CO2 emissions of Brussels by 10% in 1 year', 
     state: 'trading period', 
     votingDeadLine: '200000', 
     owner: 'owner1',
     goalValue: 10,
+    rules: '',
+    externalLinks: '',
     votingDeadline: 10,
     goalMaturity: 1000000,
     proposals: [
@@ -148,7 +151,8 @@ export default function GoalOverview() {
           <div style={{marginBottom: "6rem"}}>
             <Link
               href={{
-                pathname: "/proposal-create"
+                pathname: "/proposal-create",
+                query: { goalAddress: goal.addr }
               }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" height="60px" viewBox="0 -960 960 960" width="60px" fill="#e8eaed"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Z"/></svg>
