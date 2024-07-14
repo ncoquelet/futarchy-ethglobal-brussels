@@ -24,7 +24,7 @@ export default function GoalOverview() {
 
   const goal = {
     id: 'id1', 
-    addr: 'address test',
+    addr: goalAddress,
     description:'Reduce the CO2 emissions of Brussels by 10% in 1 year', 
     state: 'trading period', 
     votingDeadLine: '200000', 
