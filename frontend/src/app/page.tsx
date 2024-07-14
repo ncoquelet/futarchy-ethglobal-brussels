@@ -13,11 +13,11 @@ export default function Home() {
   //get the goals from address
 
   const cardList = goals.map((goal) => (
-    <div className="card-container" key={goal.address}>
+    <div className="card-container" key={goal.addr}>
       <Link
         href={{
           pathname: "/goal-overview",
-          query: { goalAddress: goal.address }, // the data
+          query: { goalAddress: goal.addr }, // the data
         }}
       >
         <ProposalCard

@@ -12,6 +12,7 @@ import { GOVERNANCE_CONTRACT_ADDRESS } from "../app/config";
 // Abis
 import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
 import { abi as goalAbi } from "../abi/FutarchyGoal.json";
+import { abi as proposalAbi } from "../abi/FutarchyProposal.json";
 import { useAccount, useContractRead, usePublicClient } from "wagmi";
 import { waitForTransaction, writeContract } from "wagmi/actions";
 import { ToastType } from "@/components/ToastGpt";
@@ -37,13 +38,21 @@ const FutarchyContext = createContext<FutarchyContextProps>({
 });
 
 export type Goal = {
-  address: Address;
+  addr: Address;
   description: string;
   votingDeadline: number;
-  proposals: string[];
+  proposals: Proposal[];
   currentProposal: Address;
   goalMaturity: number;
   goalValue: number;
+};
+
+export type Proposal = {
+  addr: Address;
+  status: string;
+  balanceYes: bigint;
+  balanceNo: bigint;
+  goalAchieved: boolean;
 };
 
 export const FutarchyProvider = ({ children }: PropsWithChildren) => {
@@ -90,17 +99,34 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             abi: goalAbi,
             functionName: "getGoal",
           })) as {
-            addr: string;
+            addr: Address;
             remoteCid: string;
-            proposals: Array<string>;
+            proposals: Array<Address>;
             startTime: bigint;
           };
 
+          const proposals = await Promise.all(
+            goal.proposals.map(async (propAddr) => {
+              const proposal = (await publicClient.readContract({
+                address: propAddr,
+                abi: proposalAbi,
+                functionName: "getProposal",
+              })) as {
+                addr: Address;
+                status: string;
+                balanceYes: bigint;
+                balanceNo: bigint;
+                goalAchieved: boolean;
+              };
+
+              return { ...proposal } as Proposal;
+            })
+          );
+
           return {
-            address: goal.addr,
-            description: goal.remoteCid,
-            proposals: goal.proposals,
-            startTime: goal.startTime,
+            ...goal,
+            description: "",
+            proposals: proposals,
             currentProposal: "0x",
             goalValue: 0,
             votingDeadline: 0,
