@@ -5,15 +5,15 @@ import { Avatar, AvatarBadge, AvatarGroup, Wrap, WrapItem } from '@chakra-ui/rea
 
 import { Progress } from '@chakra-ui/react'
 
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 
 // Chakra UI
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 export default function GoalOverview() {
 
-  // const router = useRouter();
-  // const goalAddress = router.query.goalAddress;
+  const searchParams = useSearchParams();
+  const goalAddress = searchParams.get('goalAddress');
 
   //TODO: GET the goal metadata given the addresses
 
