@@ -76,7 +76,7 @@ export default function GoalForm() {
             <FormLabel>Title</FormLabel>
             <Input
               name="title"
-              placeholder="Reduce my city's CO2 emissions by 10% in 1 year."
+              value="Achieve a 5% increase in turnover within one year."
             />
           </FormControl>
 
@@ -84,13 +84,13 @@ export default function GoalForm() {
             <FormLabel>Overview</FormLabel>
             <Textarea
               name="overview"
-              placeholder="This proposal aims to explore the potential environmental benefits of expanding the city's bike lane network by 20%..."
+              value="As a company, our goal is to achieve a 5% increase in turnover within the next year by enhancing our product offerings, We are committed to implementing strategic initiatives that will drive growth and deliver value to our stakeholders."
             />
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>Goal value</FormLabel>
-            <Input name="goalValue" type="goalValue" />
+            <Input value="5" name="goalValue" type="goalValue" />
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
@@ -115,13 +115,13 @@ export default function GoalForm() {
             <FormLabel>Rules</FormLabel>
             <Textarea
               name="rules"
-              placeholder="If my city's CO2 emissions reduce by <=1%, voters on Yes win. If my city's CO2 emissions reduce by >1%, voters on No win."
+              value="If the goal is achieved, voters on Yes win. If not, voters on No win."
             />
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>External link (Optional)</FormLabel>
-            <Input name="externalLink" placeholder="www.bougezvousauvelo.fr" />
+            <Input name="externalLink" value="https://www.ledger.com/" />
           </FormControl>
 
           <HStack justify="space-between" style={{ marginTop: "3rem" }}>
