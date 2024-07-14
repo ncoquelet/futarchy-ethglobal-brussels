@@ -130,7 +130,7 @@ function GoalOverviewContent() {
             </div>
             <div style={{ marginTop: "2rem" }}>
               <h2>Goal value</h2>
-              <h3>{goal.goalValue}%</h3>
+              <h3>{'5'}%</h3>
             </div>
             <div style={{ marginTop: "2rem" }}>
               <h2>Rules</h2>
@@ -147,14 +147,14 @@ function GoalOverviewContent() {
                 <span className="material-symbols-outlined">show_chart</span>
                 <h2 style={{ marginLeft: "0.5rem" }}>Trading phase duration</h2>
               </div>
-              <h3>{goal.votingDeadline}s</h3>
+              <h3>{'5 days'}</h3>
             </div>
             <div className="grey-card" style={{ marginBottom: "1rem" }}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="material-symbols-outlined">check</span>
                 <h2 style={{ marginLeft: "0.5rem" }}>Proposal testing duration</h2>
               </div>
-              <h3>{goal.goalMaturity}s</h3>
+              <h3>{'3 months'}</h3>
             </div>
           </div>
         </div>
