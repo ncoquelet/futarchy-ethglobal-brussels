@@ -7,15 +7,15 @@ import {
   Button,
   FormControl,
   FormLabel,
+  HStack,
   Input,
   Select,
   Textarea,
   VStack,
-  HStack,
 } from "@chakra-ui/react";
 import lighthouse from "@lighthouse-web3/sdk";
-import { IPFS_API_KEY } from "../config";
 import { title } from "process";
+import { IPFS_API_KEY } from "../config";
 
 export default function GoalForm() {
   const { createGoal } = useFutarchy();
@@ -76,7 +76,7 @@ export default function GoalForm() {
             <FormLabel>Title</FormLabel>
             <Input
               name="title"
-              value="Achieve a 5% increase in turnover within one year."
+              defaultValue="Achieve a 5% increase in turnover within one year."
             />
           </FormControl>
 
@@ -84,13 +84,13 @@ export default function GoalForm() {
             <FormLabel>Overview</FormLabel>
             <Textarea
               name="overview"
-              value="As a company, our goal is to achieve a 5% increase in turnover within the next year by enhancing our product offerings, We are committed to implementing strategic initiatives that will drive growth and deliver value to our stakeholders."
+              defaultValue="As a company, our goal is to achieve a 5% increase in turnover within the next year by enhancing our product offerings, We are committed to implementing strategic initiatives that will drive growth and deliver value to our stakeholders."
             />
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>Goal value</FormLabel>
-            <Input value="5" name="goalValue" type="goalValue" />
+            <Input defaultValue="5" name="goalValue" type="goalValue" />
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
@@ -115,13 +115,13 @@ export default function GoalForm() {
             <FormLabel>Rules</FormLabel>
             <Textarea
               name="rules"
-              value="If the goal is achieved, voters on Yes win. If not, voters on No win."
+              defaultValue="If the goal is achieved, voters on Yes win. If not, voters on No win."
             />
           </FormControl>
 
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>External link (Optional)</FormLabel>
-            <Input name="externalLink" value="https://www.ledger.com/" />
+            <Input name="externalLink" defaultValue="https://www.ledger.com/" />
           </FormControl>
 
           <HStack justify="space-between" style={{ marginTop: "3rem" }}>
