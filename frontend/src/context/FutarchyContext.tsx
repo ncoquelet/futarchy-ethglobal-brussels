@@ -10,15 +10,15 @@ import { Address, etherUnits, parseAbiItem } from "viem";
 import { GOVERNANCE_CONTRACT_ADDRESS } from "../app/config";
 
 // Abis
-import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
-import { abi as goalAbi } from "../abi/FutarchyGoal.json";
-import { abi as proposalAbi } from "../abi/FutarchyProposal.json";
-import { useAccount, useContractRead, usePublicClient } from "wagmi";
-import { waitForTransaction, writeContract } from "wagmi/actions";
 import { ToastType } from "@/components/ToastGpt";
-import { useNotification } from "./NotificationContext";
 import { log } from "console";
 import { useSearchParams } from "next/navigation";
+import { useAccount, useContractRead, usePublicClient } from "wagmi";
+import { waitForTransaction, writeContract } from "wagmi/actions";
+import { abi as goalAbi } from "../abi/FutarchyGoal.json";
+import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
+import { abi as proposalAbi } from "../abi/FutarchyProposal.json";
+import { useNotification } from "./NotificationContext";
 
 type FutarchyContextProps = {
   contractAddress: Address;
@@ -60,6 +60,17 @@ export type Goal = {
   currentProposal: Address;
   goalMaturity: number;
   goalValue: number;
+};
+
+type ContractGoal = {
+  addr: Address;
+  remoteCid: string;
+  proposals: Address[];
+  goalMaturity: bigint;
+  goalValue: bigint;
+  votingDeadline: bigint;
+  currentProposal: Address;
+  startTime: bigint;
 };
 
 export type Proposal = {
@@ -120,12 +131,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             address: log.args._addr!,
             abi: goalAbi,
             functionName: "getGoal",
-          })) as {
-            addr: Address;
-            remoteCid: string;
-            proposals: Array<Address>;
-            startTime: bigint;
-          };
+          })) as ContractGoal;
 
           let goalMetadata: any = {};
           try {
@@ -142,16 +148,6 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             console.error(error);
           }
 
-          // let goalMetadata: any = {};
-          // fetch(`https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`)
-          //   .then((response: Response) => {
-          //     if (response.ok) return (goalMetadata = response.json());
-          //     throw new Error("Network response was not ok.");
-          //   })
-          //   .catch((error: Error) => {
-          //     console.error("Failed to save the file:", error);
-          //   });
-          // console.log(goalMetadata)
           const proposals = await Promise.all(
             goal.proposals.map(async (propAddr) => {
               const proposal = (await publicClient.readContract({
@@ -181,16 +177,6 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
               } catch (error) {
                 console.error(error);
               }
-              // fetch(
-              //   `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}/`
-              // )
-              //   .then((response: Response) => {
-              //     if (response.ok) return (proposalMetadata = response.json());
-              //     throw new Error("Network response was not ok.");
-              //   })
-              //   .catch((error: Error) => {
-              //     console.error("Failed to save the file:", error);
-              //   });
 
               return {
                 ...proposal,
@@ -210,9 +196,9 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             externalLink: goalMetadata.externalLink,
             proposals: proposals,
             currentProposal: "0x",
-            goalValue: 0,
-            votingDeadline: 0,
-            goalMaturity: 0,
+            goalValue: Number(goal.goalValue),
+            votingDeadline: Number(goal.votingDeadline),
+            goalMaturity: Number(goal.goalMaturity),
           } as Goal;
         })
       );
