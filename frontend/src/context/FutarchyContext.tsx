@@ -83,6 +83,15 @@ export type Proposal = {
   externalLink: string;
 };
 
+type ContractProposal = {
+  addr: Address;
+  remoteCid: string;
+  status: string;
+  balanceYes: bigint;
+  balanceNo: bigint;
+  goalAchieved: boolean;
+};
+
 export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const contractAddress = GOVERNANCE_CONTRACT_ADDRESS as Address;
   console.log(`layout contractAddress ${contractAddress}`);
@@ -91,19 +100,14 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
   // connection
   const publicClient = usePublicClient();
-  const { address: account } = useAccount();
 
   const { showNotification } = useNotification();
 
   // Current wallet address
-  const { address, isDisconnected } = useAccount();
+  const { address } = useAccount();
 
   // Current wallet address
-  const {
-    data: owner,
-    isLoading: isLoadingOwner,
-    refetch,
-  } = useContractRead({
+  const { data: owner, isLoading: isLoadingOwner } = useContractRead({
     address: contractAddress as Address,
     abi: governanceAbi,
     functionName: "owner",
@@ -112,7 +116,6 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   const isOwner = address! && address === owner; // Is the current user the owner of the contract ?
 
   const [goals, setGoals] = useState<Array<Goal>>([]);
-  const [proposals, setProposals] = useState<Array<Proposal>>([]);
 
   useEffect(() => {
     const fetchGoals = async () => {
@@ -152,14 +155,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
                 address: propAddr,
                 abi: proposalAbi,
                 functionName: "getProposal",
-              })) as {
-                addr: Address;
-                status: string;
-                remoteCid: string;
-                balanceYes: bigint;
-                balanceNo: bigint;
-                goalAchieved: boolean;
-              };
+              })) as ContractProposal;
 
               let proposalMetadata: any = {};
               try {
