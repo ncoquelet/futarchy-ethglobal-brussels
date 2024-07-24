@@ -1,21 +1,12 @@
 "use client";
 
 import { Goal, useFutarchy } from "@/context/FutarchyContext";
-import {
-  Avatar,
-  AvatarBadge,
-  AvatarGroup,
-  Button,
-  ButtonGroup,
-  Progress,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
-import Image from "next/image";
+import { Avatar, Wrap, WrapItem } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react"; // Import Suspense
-import Loading from "../../components/Loading"; // Make sure this path is correct
+import Loading from "../../components/Loading";
+import { convertToText } from "@/utils/DateUtils";
 
 function GoalOverviewContent() {
   const { buyYes, buyNo } = useFutarchy();
@@ -24,25 +15,6 @@ function GoalOverviewContent() {
 
   const { goals } = useFutarchy();
   const goal = goals.find((goal) => goal.addr == goalAddress) as Goal;
-
-  const convertToText = (seconde: number) => {
-    switch (seconde) {
-      case 5 * 24 * 60 * 60:
-        return "5 days";
-      case 10 * 24 * 60 * 60:
-        return "10 days";
-      case 30 * 24 * 60 * 60:
-        return "1 month";
-      case 3 * 30 * 24 * 60 * 60:
-        return "3 months";
-      case 6 * 30 * 24 * 60 * 60:
-        return "6 months";
-      case 12 * 30 * 24 * 60 * 60:
-        return "1 year";
-      default:
-        return "-";
-    }
-  };
 
   const proposalList = goal.proposals.map((proposal, index) => (
     <div

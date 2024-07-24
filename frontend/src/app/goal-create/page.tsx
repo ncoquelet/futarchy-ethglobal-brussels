@@ -14,31 +14,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import lighthouse from "@lighthouse-web3/sdk";
-import { title } from "process";
 import { IPFS_API_KEY } from "../config";
+import { convertToSeconds } from "@/utils/DateUtils";
 
 export default function GoalForm() {
   const { createGoal } = useFutarchy();
   const apiKey: string = IPFS_API_KEY || "";
-
-  const convertToSeconds = (value: string) => {
-    switch (value) {
-      case "5d":
-        return 5 * 24 * 60 * 60;
-      case "10d":
-        return 10 * 24 * 60 * 60;
-      case "1m":
-        return 30 * 24 * 60 * 60;
-      case "3m":
-        return 3 * 30 * 24 * 60 * 60;
-      case "6m":
-        return 6 * 30 * 24 * 60 * 60;
-      case "1y":
-        return 12 * 30 * 24 * 60 * 60;
-      default:
-        return 0;
-    }
-  };
 
   async function submit(formData: any) {
     const goalMetadata = {
@@ -48,12 +29,12 @@ export default function GoalForm() {
       externalLink: formData.get("externalLink"),
     };
     const votingDeadline = BigInt(
-      convertToSeconds(formData.get("votingDeadline"))
+      convertToSeconds(formData.get("votingDeadline")),
     );
     const goalMaturity = BigInt(convertToSeconds(formData.get("goalMaturity")));
     const response = await lighthouse.uploadText(
       JSON.stringify(goalMetadata),
-      apiKey
+      apiKey,
     );
     const cid = response.data.Hash;
 
