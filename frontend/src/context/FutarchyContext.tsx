@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { Address, parseAbiItem } from "viem";
-import { GOVERNANCE_CONTRACT_ADDRESS } from "../app/config";
+import { GOVERNANCE_CONTRACT_ADDRESS } from "@/app/config";
 
 // Abis
 import { ToastType } from "@/components/ToastGpt";
@@ -204,7 +204,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
     return () => {
       clearInterval(intervalID);
     };
-  }, [contractAddress]);
+  }, [publicClient, contractAddress]);
 
   const createGoal = async (
     cid: string,
