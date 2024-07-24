@@ -28,7 +28,7 @@ type FutarchyContextProps = {
     votingDeadline: bigint,
     goalMaturity: bigint,
   ): Promise<void>;
-  createProposal(cid: string): void;
+  createProposal(cid: string): Promise<void>;
   buyYes(proposal: Address, quantity: number): void;
   buyNo(proposal: Address, quantity: number): void;
   endProposalVoting(proposal: Address): void;
@@ -40,7 +40,7 @@ const FutarchyContext = createContext<FutarchyContextProps>({
   isOwner: false,
   goals: [],
   createGoal: async () => new Promise(() => {}),
-  createProposal: () => {},
+  createProposal: async () => new Promise(() => {}),
   buyYes: () => {},
   buyNo: () => {},
   endProposalVoting: () => {},
