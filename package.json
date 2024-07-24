@@ -13,6 +13,10 @@
     "url": "https://github.com/ncoquelet/futarchy-ethglobal-brussels/issues"
   },
   "homepage": "https://github.com/ncoquelet/futarchy-ethglobal-brussels#readme",
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
   "engines": {
     "node": ">=18.18.2"
   }
