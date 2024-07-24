@@ -69,8 +69,8 @@ export default function Home() {
                     >
                         <Image
                             src="/sunset.png"
-                            width={350}
-                            height={350}
+                            width={500}
+                            height={500}
                             alt="Picture of a sunset"
                         />
                     </div>

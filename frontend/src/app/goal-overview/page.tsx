@@ -14,7 +14,7 @@ function GoalOverviewContent() {
   const goalAddress = searchParams.get("goalAddress");
 
   const { goals } = useFutarchy();
-  const goal = goals.find((goal) => goal.addr == goalAddress) as Goal;
+  const goal = goals.find((goal) => goal?.addr == goalAddress) as Goal;
 
   return (
     <div className="font-satoshi">
@@ -34,7 +34,7 @@ function GoalOverviewContent() {
           <div
             style={{ fontSize: "2rem", fontWeight: "bold", flex: "0 0 60%" }}
           >
-            {goal.title}
+            {goal?.title}
           </div>
         </div>
 
@@ -42,7 +42,7 @@ function GoalOverviewContent() {
           style={{
             display: "flex",
             alignItems: "center",
-            marginBottom: "2rem;",
+            marginBottom: "2rem",
           }}
         >
           <Wrap>
@@ -61,19 +61,19 @@ function GoalOverviewContent() {
           <div style={{ flex: "0 0 65%", paddingRight: "15rem" }}>
             <div style={{ marginTop: "2rem" }}>
               <h2>Overview</h2>
-              <h3>{goal.overview}</h3>
+              <h3>{goal?.overview}</h3>
             </div>
             <div style={{ marginTop: "2rem" }}>
               <h2>Goal value</h2>
-              <h3>{goal.goalValue}%</h3>
+              <h3>{goal?.goalValue}%</h3>
             </div>
             <div style={{ marginTop: "2rem" }}>
               <h2>Rules</h2>
-              <h3>{goal.rules}</h3>
+              <h3>{goal?.rules}</h3>
             </div>
             <div style={{ marginTop: "2rem" }}>
               <h2>External link</h2>
-              <h3>{goal.externalLink}</h3>
+              <h3>{goal?.externalLink}</h3>
             </div>
           </div>
           <div style={{ flex: "0 0 35%" }}>
@@ -82,7 +82,7 @@ function GoalOverviewContent() {
                 <span className="material-symbols-outlined">show_chart</span>
                 <h2 style={{ marginLeft: "0.5rem" }}>Trading phase duration</h2>
               </div>
-              <h3>{convertToText(goal.votingDeadline)}</h3>
+              <h3>{convertToText(goal?.votingDeadline)}</h3>
             </div>
             <div className="grey-card" style={{ marginBottom: "1rem" }}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -91,7 +91,7 @@ function GoalOverviewContent() {
                   Proposal testing duration
                 </h2>
               </div>
-              <h3>{convertToText(goal.goalMaturity)}</h3>
+              <h3>{convertToText(goal?.goalMaturity)}</h3>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@ function GoalOverviewContent() {
       <div
         style={{
           backgroundColor: "#25262A",
-          minHeight: "28rem;",
+          minHeight: "28rem",
           paddingLeft: "8rem",
           marginBottom: "2rem",
           paddingTop: "2rem",
@@ -119,14 +119,14 @@ function GoalOverviewContent() {
           </h2>
         </div>
         <div className="proposal-card-list">
-          {goal.proposals?.map((proposal, index) => (
+          {goal?.proposals?.map((proposal, index) => (
             <ProposalCard key={`proposal_${index}`} proposal={proposal} />
           ))}
           <div style={{ marginBottom: "6rem" }}>
             <Link
               href={{
                 pathname: "/proposal-create",
-                query: { goalAddress: goal.addr },
+                query: { goalAddress: goal?.addr },
               }}
             >
               <svg
