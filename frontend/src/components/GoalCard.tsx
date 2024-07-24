@@ -1,5 +1,5 @@
-import { Box, Text, Stack } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import {Box, Stack} from "@chakra-ui/react";
+import {StarIcon} from "@chakra-ui/icons";
 
 interface ProposalCardProps {
   goal: any;
@@ -7,7 +7,7 @@ interface ProposalCardProps {
   votingDeadline: number;
 }
 
-const ProposalCard: React.FC<ProposalCardProps> = ({
+const GoalCard: React.FC<ProposalCardProps> = ({
   goal,
   proposals,
   votingDeadline,
@@ -42,4 +42,4 @@ const ProposalCard: React.FC<ProposalCardProps> = ({
   );
 };
 
-export default ProposalCard;
+export default GoalCard;
