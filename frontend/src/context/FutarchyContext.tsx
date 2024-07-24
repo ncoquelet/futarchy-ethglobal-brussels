@@ -160,14 +160,14 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
               let proposalMetadata: any = {};
               try {
                 const response = await fetch(
-                  `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`,
+                  `https://gateway.lighthouse.storage/ipfs/${proposal.remoteCid}/`,
                 );
                 if (!response.ok) {
                   throw new Error(`Response status: ${response.status}`);
                 }
 
-                goalMetadata = await response.json();
-                console.log(goalMetadata);
+                proposalMetadata = await response.json();
+                console.log(proposalMetadata);
               } catch (error) {
                 console.error(error);
               }
