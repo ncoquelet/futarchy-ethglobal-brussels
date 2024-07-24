@@ -16,8 +16,10 @@ import {
 import lighthouse from "@lighthouse-web3/sdk";
 import { IPFS_API_KEY } from "../config";
 import { convertToSeconds } from "@/utils/DateUtils";
+import { useRouter } from "next/navigation";
 
 export default function GoalForm() {
+  const router = useRouter();
   const { createGoal } = useFutarchy();
   const apiKey: string = IPFS_API_KEY || "";
 
@@ -40,7 +42,8 @@ export default function GoalForm() {
 
     const goalValue = BigInt(Number(formData.get("goalValue")));
 
-    createGoal(cid, goalValue, votingDeadline, goalMaturity);
+    await createGoal(cid, goalValue, votingDeadline, goalMaturity);
+    router.push("/");
   }
 
   return (
@@ -112,8 +115,9 @@ export default function GoalForm() {
               colorScheme="blue"
               borderColor="customBlue.100"
               size="md"
+              onClick={() => router.back()}
             >
-              Precedent
+              Cancel
             </Button>
             <Button
               bg="customBlue.100"
@@ -122,7 +126,7 @@ export default function GoalForm() {
               size="md"
               type="submit"
             >
-              Next
+              Create
             </Button>
           </HStack>
         </VStack>

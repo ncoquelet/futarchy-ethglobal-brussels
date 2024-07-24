@@ -1,18 +1,16 @@
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
-  PropsWithChildren,
   createContext,
+  PropsWithChildren,
   useContext,
   useEffect,
   useState,
 } from "react";
-import { Address, etherUnits, parseAbiItem } from "viem";
+import { Address, parseAbiItem } from "viem";
 import { GOVERNANCE_CONTRACT_ADDRESS } from "../app/config";
 
 // Abis
 import { ToastType } from "@/components/ToastGpt";
-import { log } from "console";
-import { useSearchParams } from "next/navigation";
 import { useAccount, useContractRead, usePublicClient } from "wagmi";
 import { waitForTransaction, writeContract } from "wagmi/actions";
 import { abi as goalAbi } from "../abi/FutarchyGoal.json";
@@ -28,8 +26,8 @@ type FutarchyContextProps = {
     cid: string,
     goalValue: bigint,
     votingDeadline: bigint,
-    goalMaturity: bigint
-  ): void;
+    goalMaturity: bigint,
+  ): Promise<void>;
   createProposal(cid: string): void;
   buyYes(proposal: Address, quantity: number): void;
   buyNo(proposal: Address, quantity: number): void;
@@ -41,7 +39,7 @@ const FutarchyContext = createContext<FutarchyContextProps>({
   contractAddress: "0x" as Address,
   isOwner: false,
   goals: [],
-  createGoal: () => {},
+  createGoal: async () => new Promise(() => {}),
   createProposal: () => {},
   buyYes: () => {},
   buyNo: () => {},
@@ -136,7 +134,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
           let goalMetadata: any = {};
           try {
             const response = await fetch(
-              `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`
+              `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`,
             );
             if (!response.ok) {
               throw new Error(`Response status: ${response.status}`);
@@ -166,7 +164,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
               let proposalMetadata: any = {};
               try {
                 const response = await fetch(
-                  `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`
+                  `https://gateway.lighthouse.storage/ipfs/${goal.remoteCid}/`,
                 );
                 if (!response.ok) {
                   throw new Error(`Response status: ${response.status}`);
@@ -185,7 +183,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
                 rules: proposalMetadata.rules,
                 externalLink: proposalMetadata.externalLink,
               } as Proposal;
-            })
+            }),
           );
 
           return {
@@ -200,7 +198,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             votingDeadline: Number(goal.votingDeadline),
             goalMaturity: Number(goal.goalMaturity),
           } as Goal;
-        })
+        }),
       );
       setGoals(goals);
     };
@@ -216,7 +214,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
     cid: string,
     goalValue: bigint,
     votingDeadline: bigint,
-    goalMaturity: bigint
+    goalMaturity: bigint,
   ) => {
     try {
       const { hash } = await writeContract({
