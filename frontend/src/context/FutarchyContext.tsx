@@ -58,6 +58,7 @@ export type Goal = {
   currentProposal: Address;
   goalMaturity: number;
   goalValue: number;
+  startTime: number;
 };
 
 type ContractGoal = {
@@ -73,15 +74,22 @@ type ContractGoal = {
 
 export type Proposal = {
   addr: Address;
-  status: string;
-  balanceYes: bigint;
-  balanceNo: bigint;
+  status: ProposalStatus;
+  balanceYes: number;
+  balanceNo: number;
   goalAchieved: boolean;
   title: string;
   overview: string;
-  rules: string;
   externalLink: string;
 };
+
+export enum ProposalStatus {
+  Waiting = "Waiting",
+  VoteStarted = "VoteStarted",
+  VoteCancelled = "VoteCancelled",
+  VoteAccepted = "VoteAccepted",
+  VoteClosed = "VoteClosed",
+}
 
 type ContractProposal = {
   addr: Address;
@@ -176,8 +184,9 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
                 ...proposal,
                 title: proposalMetadata.title,
                 overview: proposalMetadata.overview,
-                rules: proposalMetadata.rules,
                 externalLink: proposalMetadata.externalLink,
+                balanceYes: Number(proposal.balanceYes),
+                balanceNo: Number(proposal.balanceNo),
               } as Proposal;
             }),
           );
@@ -189,10 +198,10 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             rules: goalMetadata.rules,
             externalLink: goalMetadata.externalLink,
             proposals: proposals,
-            currentProposal: "0x",
             goalValue: Number(goal.goalValue),
             votingDeadline: Number(goal.votingDeadline),
             goalMaturity: Number(goal.goalMaturity),
+            startTime: Number(goal.startTime),
           } as Goal;
         }),
       );

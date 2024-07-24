@@ -1,10 +1,18 @@
-import { Proposal, useFutarchy } from "@/context/FutarchyContext";
+import {
+  Goal,
+  Proposal,
+  ProposalStatus,
+  useFutarchy,
+} from "@/context/FutarchyContext";
+import { Heading, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 interface ProposalCardProps {
+  goal: Goal;
   proposal: Proposal;
 }
 
-export const ProposalCard = ({ proposal }: ProposalCardProps) => {
+export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
   const { buyYes, buyNo } = useFutarchy();
 
   const total = Number(proposal.balanceYes + proposal.balanceNo);
@@ -13,9 +21,33 @@ export const ProposalCard = ({ proposal }: ProposalCardProps) => {
   const noPercent =
     total > 0 ? Math.round((Number(proposal.balanceNo) * 100) / total) : 50;
 
+  const tradingOpen = proposal.status == ProposalStatus.VoteStarted;
+
+  const buyYesHandler = () => {
+    if (proposal.status != ProposalStatus.VoteStarted) return;
+    if (proposal.status) buyYes(proposal.addr, 1);
+  };
+
+  const buyNoHandler = () => {
+    if (proposal.status != ProposalStatus.VoteStarted) return;
+    if (proposal.status) buyYes(proposal.addr, 1);
+  };
+
+  const tradingEndDate = goal.startTime
+    ? dayjs.unix(goal.startTime).add(goal.votingDeadline, "second")
+    : undefined;
+
   return (
-    <div className="proposal-card" style={{ marginBottom: "6rem" }}>
-      <h2>{proposal.title}</h2>
+    <div className="grey-card" style={{ marginBottom: "1rem" }}>
+      <Heading as="h4" size="md" pb={4}>
+        {proposal.title}
+      </Heading>
+      <Heading as="h5" size="xs" pt={2}>
+        Trading until
+      </Heading>
+      <Text fontSize="md">
+        {tradingEndDate ? tradingEndDate.format("YYYY-MM-DD") : "pending"}
+      </Text>
       <div style={{ display: "flex", marginTop: "1rem" }}>
         <div
           style={{
@@ -28,9 +60,12 @@ export const ProposalCard = ({ proposal }: ProposalCardProps) => {
             alignItems: "center",
             marginRight: "0.3rem",
             minHeight: "10rem",
+            cursor: "pointer",
+            pointerEvents: tradingOpen ? "auto" : "none",
           }}
+          onClick={() => buyYesHandler()}
         >
-          <div onClick={() => buyYes(proposal.addr, 1)}>
+          <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="60px"
@@ -54,9 +89,11 @@ export const ProposalCard = ({ proposal }: ProposalCardProps) => {
             alignItems: "center",
             marginLeft: "0.3rem",
             minHeight: "10rem",
+            cursor: "pointer",
           }}
+          onClick={() => buyNo(proposal.addr, 1)}
         >
-          <div onClick={() => buyNo(proposal.addr, 1)}>
+          <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="60px"
@@ -70,44 +107,8 @@ export const ProposalCard = ({ proposal }: ProposalCardProps) => {
           <h2>buy NO</h2>
         </div>
       </div>
-      <div
-        style={{ display: "flex", marginTop: "0.6rem", marginBottom: "1.2rem" }}
-      >
-        <div
-          style={{
-            width: `${yesPercent}%`,
-            borderTopLeftRadius: "10px",
-            borderBottomLeftRadius: "10px",
-            backgroundColor: "#1DBF1A",
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div
-            style={{ color: "white", marginLeft: "1rem", fontWeight: "bold" }}
-          >
-            {`${yesPercent}%`}
-          </div>
-        </div>
-        <div
-          style={{
-            width: `${noPercent}%`,
-            borderTopRightRadius: "10px",
-            borderBottomRightRadius: "10px",
-            backgroundColor: "#FF6B6B",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <div
-            style={{ color: "white", marginRight: "1rem", fontWeight: "bold" }}
-          >
-            {`${noPercent}%`}
-          </div>
-        </div>
-      </div>
-      <div></div>
-      <div
+      <ProgressBar yesPercent={yesPercent} noPercent={noPercent} />
+      {/*<div
         style={{
           backgroundColor: "#D4E5FA",
           borderRadius: "10px",
@@ -119,6 +120,49 @@ export const ProposalCard = ({ proposal }: ProposalCardProps) => {
       >
         {Number(proposal.balanceYes + proposal.balanceNo)} ETH is staked in the
         pool
+      </div>*/}
+    </div>
+  );
+};
+
+export const ProgressBar = ({
+  yesPercent,
+  noPercent,
+}: {
+  yesPercent: number;
+  noPercent: number;
+}) => {
+  return (
+    <div style={{ display: "flex", marginTop: "0.8rem", marginBottom: "0" }}>
+      <div
+        style={{
+          width: `${yesPercent}%`,
+          borderTopLeftRadius: "10px",
+          borderBottomLeftRadius: "10px",
+          backgroundColor: "#1DBF1A",
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+      >
+        <div style={{ color: "white", marginLeft: "1rem", fontWeight: "bold" }}>
+          {`${yesPercent}%`}
+        </div>
+      </div>
+      <div
+        style={{
+          width: `${noPercent}%`,
+          borderTopRightRadius: "10px",
+          borderBottomRightRadius: "10px",
+          backgroundColor: "#FF6B6B",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <div
+          style={{ color: "white", marginRight: "1rem", fontWeight: "bold" }}
+        >
+          {`${noPercent}%`}
+        </div>
       </div>
     </div>
   );
