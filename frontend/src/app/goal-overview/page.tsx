@@ -79,7 +79,7 @@ function GoalOverviewContent() {
                 Rules
               </Heading>
               <Text fontSize="lg">{goal.rules}</Text>
-              <Heading size="lg" my={4}>
+              <Heading size="md" mt={4}>
                 External link
               </Heading>
               <Text fontSize="lg">{goal.externalLink}</Text>

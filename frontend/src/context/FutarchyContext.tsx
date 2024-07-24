@@ -24,6 +24,7 @@ type FutarchyContextProps = {
   goals: Array<Goal>;
   createGoal(
     cid: string,
+    pcid: string,
     goalValue: bigint,
     votingDeadline: bigint,
     goalMaturity: bigint,
@@ -74,7 +75,7 @@ type ContractGoal = {
 
 export type Proposal = {
   addr: Address;
-  status: ProposalStatus;
+  status: number;
   balanceYes: number;
   balanceNo: number;
   goalAchieved: boolean;
@@ -83,13 +84,13 @@ export type Proposal = {
   externalLink: string;
 };
 
-export enum ProposalStatus {
-  Waiting = "Waiting",
-  VoteStarted = "VoteStarted",
-  VoteCancelled = "VoteCancelled",
-  VoteAccepted = "VoteAccepted",
-  VoteClosed = "VoteClosed",
-}
+export const ProposalStatus = {
+  Waiting: 0,
+  VoteStarted: 1,
+  VoteCancelled: 2,
+  VoteAccepted: 3,
+  VoteClosed: 4,
+};
 
 type ContractProposal = {
   addr: Address;
@@ -182,6 +183,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
               return {
                 ...proposal,
+                status: Number(proposal.status),
                 title: proposalMetadata.title,
                 overview: proposalMetadata.overview,
                 externalLink: proposalMetadata.externalLink,
@@ -208,7 +210,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
       setGoals(goals);
     };
 
-    const intervalID = setInterval(fetchGoals, 10000);
+    const intervalID = setInterval(fetchGoals, 2000);
 
     return () => {
       clearInterval(intervalID);
@@ -217,6 +219,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
 
   const createGoal = async (
     cid: string,
+    pcid: string,
     goalValue: bigint,
     votingDeadline: bigint,
     goalMaturity: bigint,
@@ -226,7 +229,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
         address: contractAddress as Address,
         abi: governanceAbi,
         functionName: "createGoal",
-        args: [cid, goalMaturity, goalValue, votingDeadline, true],
+        args: [cid, pcid, goalMaturity, goalValue, votingDeadline, true],
       });
 
       await waitForTransaction({ hash });

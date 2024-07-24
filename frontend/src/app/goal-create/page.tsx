@@ -40,9 +40,20 @@ export default function GoalForm() {
     );
     const cid = response.data.Hash;
 
+    const proposalMetadata = {
+      title: formData.get("proposal"),
+      overview: "",
+      externalLink: "",
+    };
+    const proposalResponse = await lighthouse.uploadText(
+      JSON.stringify(proposalMetadata),
+      apiKey,
+    );
+    const pcid = proposalResponse.data.Hash;
+
     const goalValue = BigInt(Number(formData.get("goalValue")));
 
-    await createGoal(cid, goalValue, votingDeadline, goalMaturity);
+    await createGoal(cid, pcid, goalValue, votingDeadline, goalMaturity);
     router.push("/");
   }
 
@@ -54,7 +65,7 @@ export default function GoalForm() {
         p={4}
         style={{ marginTop: "3rem", marginBottom: "12rem" }}
       >
-        <h2 style={{ marginBottom: "4rem" }}>Make a goal</h2>
+        <h2 style={{ marginBottom: "2rem" }}>Make a goal</h2>
         <VStack spacing={4} align="stretch">
           <FormControl style={{ marginTop: "1rem" }}>
             <FormLabel>Title</FormLabel>
@@ -64,7 +75,7 @@ export default function GoalForm() {
             />
           </FormControl>
 
-          <FormControl style={{ marginTop: "1rem" }}>
+          <FormControl>
             <FormLabel>Overview</FormLabel>
             <Textarea
               name="overview"
@@ -72,12 +83,20 @@ export default function GoalForm() {
             />
           </FormControl>
 
-          <FormControl style={{ marginTop: "1rem" }}>
+          <FormControl>
+            <FormLabel>Proposal</FormLabel>
+            <Textarea
+              name="proposal"
+              defaultValue="Partnering with artists to bring out a new line of our best seller product."
+            />
+          </FormControl>
+
+          <FormControl>
             <FormLabel>Goal value</FormLabel>
             <Input defaultValue="5" name="goalValue" type="goalValue" />
           </FormControl>
 
-          <FormControl style={{ marginTop: "1rem" }}>
+          <FormControl>
             <FormLabel>Trading phase duration</FormLabel>
             <Select name="votingDeadline" placeholder="Select duration">
               <option value="5d">5 days</option>
@@ -86,7 +105,7 @@ export default function GoalForm() {
             </Select>
           </FormControl>
 
-          <FormControl style={{ marginTop: "1rem" }}>
+          <FormControl>
             <FormLabel>Testing phase duration</FormLabel>
             <Select name="goalMaturity" placeholder="Select duration">
               <option value="3m">3 months</option>
@@ -95,7 +114,7 @@ export default function GoalForm() {
             </Select>
           </FormControl>
 
-          <FormControl style={{ marginTop: "1rem" }}>
+          <FormControl>
             <FormLabel>Rules</FormLabel>
             <Textarea
               name="rules"
@@ -103,7 +122,7 @@ export default function GoalForm() {
             />
           </FormControl>
 
-          <FormControl style={{ marginTop: "1rem" }}>
+          <FormControl>
             <FormLabel>External link (Optional)</FormLabel>
             <Input name="externalLink" defaultValue="https://www.ledger.com/" />
           </FormControl>

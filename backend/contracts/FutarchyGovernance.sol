@@ -12,8 +12,8 @@ contract FutarchyGovernance is Ownable {
 
   constructor() Ownable(msg.sender) {}
 
-  function createGoal(string calldata _description, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) public onlyOwner() {
-    address addr = address(new FutarchyGoal(_description, msg.sender, _goalMaturity, _goalValue, _votingDeadline, _demo));
+  function createGoal(string calldata _cid, string calldata _proposalCid, uint _goalMaturity, uint _goalValue, uint _votingDeadline, bool _demo) public onlyOwner() {
+    address addr = address(new FutarchyGoal(_cid, _proposalCid, msg.sender, _goalMaturity, _goalValue, _votingDeadline, _demo));
     goals.push(addr);
     uint goalId = goals.length - 1;
     emit GoalAdded(goalId, addr);

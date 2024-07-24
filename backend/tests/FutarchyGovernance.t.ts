@@ -29,17 +29,33 @@ describe('Futarchy Governance', () => {
 
       // when
       const expectedDesc = 'desc'
+      const expectedProposal = 'proposal'
 
-      await expect(governance.createGoal(expectedDesc, BigInt(10), BigInt(20), BigInt(10), false)).to.emit(
-        governance,
-        'GoalAdded'
-      )
+      await expect(
+        governance.createGoal(
+          expectedDesc,
+          expectedProposal,
+          BigInt(10),
+          BigInt(20),
+          BigInt(10),
+          false
+        )
+      ).to.emit(governance, 'GoalAdded')
     })
 
     it('should revert if sender is not the owner', async () => {
       const { governance, alice } = await loadFixture(deployGovernance)
       await expect(
-        governance.connect(alice).createGoal('desc', BigInt(10), BigInt(20), BigInt(10), false)
+        governance
+          .connect(alice)
+          .createGoal(
+            'desc',
+            'proposal',
+            BigInt(10),
+            BigInt(20),
+            BigInt(10),
+            false
+          )
       ).to.be.revertedWithCustomError(governance, 'OwnableUnauthorizedAccount')
     })
   })
