@@ -31,7 +31,7 @@ const GoalCard: React.FC<ProposalCardProps> = ({
         {/* <Text fontSize="sm">
           State: {goal.state}
         </Text> */}
-        <h3>{proposals.length} Proposals:</h3>
+        <h3>Proposal:</h3>
         {proposals.map((proposal, index) => (
           <Box key={index} bg="gray.100" p="4" borderRadius="md">
             {proposal.title}

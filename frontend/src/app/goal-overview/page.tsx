@@ -12,6 +12,7 @@ import {
   Text,
   Wrap,
   WrapItem,
+  Link
 } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react"; // Import Suspense
@@ -57,7 +58,7 @@ function GoalOverviewContent() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginBottom: "2rem;",
+                  marginTop:"0.6rem"
                 }}
               >
                 <Wrap>
@@ -71,18 +72,24 @@ function GoalOverviewContent() {
                 </Wrap>
                 <h3 style={{ marginLeft: "0.5rem" }}>proposed by 0x8f9af</h3>
               </div>
-              <Heading size="lg" mt={7} mb={4}>
-                Overview
-              </Heading>
-              <Text fontSize="lg">{goal.overview}</Text>
-              <Heading size="lg" my={4}>
-                Rules
-              </Heading>
-              <Text fontSize="lg">{goal.rules}</Text>
-              <Heading size="md" mt={4}>
-                External link
-              </Heading>
-              <Text fontSize="lg">{goal.externalLink}</Text>
+              <div style={{ marginTop: "3rem" }}>
+                <Heading size="lg" mt={7} mb={4}>
+                  Overview
+                </Heading>
+              </div>
+              <Text fontSize="md">{goal.overview}</Text>
+              <div style={{ marginBottom: "2rem" }}>
+                <Heading size="lg" my={4}>
+                  Rules
+                </Heading>
+                <Text fontSize="md">{goal.rules}</Text>
+              </div>
+              <div style={{ marginTop: "2.6rem"}}>
+                <Heading size="sm">
+                  External link
+                </Heading>
+                <Link href={goal.externalLink} isExternal fontSize="md" >{goal.externalLink}</Link>
+              </div>
             </Box>
             <Box flex="0 0 30%">
               <GoalSummary goal={goal} />

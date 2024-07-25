@@ -31,8 +31,19 @@
 .hero-text {
   color: white;
   margin-bottom: 5rem;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
+}
+
+.logo{
+  background: -webkit-linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(9,9,121,1) 63%, rgba(39,48,255,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.opacity-effect{
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+  mask-image: linear-gradient(-0deg, rgba(0,0,0,1), rgba(0,0,0,0.6));
 }
 
 .header {

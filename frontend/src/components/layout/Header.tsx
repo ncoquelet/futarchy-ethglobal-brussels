@@ -17,7 +17,7 @@ export const Header = () => {
       <Flex mx={8} mt={4} mb={2}>
         <HStack>
           <Heading>
-            <Link href={"/"}>FutarchEth</Link>
+            <Link className="logo" href={"/"}>FutarchEth</Link>
           </Heading>
         </HStack>
         <Spacer />

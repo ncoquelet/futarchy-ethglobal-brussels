@@ -78,7 +78,7 @@ export const GoalSummary = ({ goal }: GoalSummaryProps) => {
           </Text>
         )}
       </HStack>
-      <Heading as="h5" size="xs" pt={2}>
+      <Heading as="h5" size="xs" mt={3}>
         Goal achievement
       </Heading>
       <Text fontSize="md">

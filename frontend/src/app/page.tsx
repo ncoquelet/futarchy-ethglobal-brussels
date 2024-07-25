@@ -38,10 +38,10 @@ export default function Home() {
                 <div style={{flex: "0 0 30%"}}>
                     <div>
                         <div
-                            className="hero-text font-satoshi text-4xl font-bold mb-4"
+                            className="hero-text font-satoshi font-bold mb-4"
                             style={{marginTop: "1rem"}}
                         >
-                            Chose a goal and reach it with community
+                            Choose a goal and reach it with community
                         </div>
                     </div>
                     <div>
@@ -72,6 +72,7 @@ export default function Home() {
                             width={500}
                             height={500}
                             alt="Picture of a sunset"
+                            className="opacity-effect"
                         />
                     </div>
                 </div>

@@ -118,7 +118,7 @@ export default function GoalForm() {
             <FormLabel>Rules</FormLabel>
             <Textarea
               name="rules"
-              defaultValue="If the goal is achieved, voters on Yes win. If not, voters on No win."
+              defaultValue="If NO wins, the proposal is not adopted, and every bet is refunded. If YES wins, the proposal is adopted. If the goal is reached before the deadline, those who bet on YES are rewarded. If not, those who bet on NO are rewarded."
             />
           </FormControl>
 

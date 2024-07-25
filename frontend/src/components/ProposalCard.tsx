@@ -44,9 +44,15 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
   return (
     <div className="grey-card" style={{ marginBottom: "1rem" }}>
       <Heading as="h4" size="md" pb={4}>
-        {proposal.title}
+        Proposal
       </Heading>
-      <Heading as="h5" size="xs" pt={2}>
+      <Heading as="h5" size="xs">
+        Description
+      </Heading>
+      <Text fontSize="md">
+        {proposal.title}
+      </Text>
+      <Heading as="h5" size="xs" mt={3}>
         Trading until
       </Heading>
       <Text fontSize="md">
@@ -66,7 +72,7 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
           </>
         )}
       </Text>
-      <div style={{ display: "flex", marginTop: "1rem" }}>
+      <div style={{ display: "flex", marginTop: "1.5rem" }}>
         <div
           style={{
             width: "50%",

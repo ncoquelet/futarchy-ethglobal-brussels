@@ -4217,6 +4217,11 @@ data-view-byte-offset@^1.0.0:
     es-errors "^1.3.0"
     is-data-view "^1.0.1"
 
+dayjs@^1.0.2:
+  version "1.11.12"
+  resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.12.tgz"
+  integrity sha512-Rt2g+nTbLlDWZTwwrIXjy9MeiZmSDI375FvZs72ngxx8PDC6YXOeR3q5LAuPzjZQxhiWdRKac7RKV+YyQYfYIg==
+
 debounce-fn@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/debounce-fn/-/debounce-fn-4.0.0.tgz"
