@@ -19,8 +19,10 @@ import {
   NumberInputField,
   NumberInputStepper,
   Text,
+  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
+import {InfoIcon} from "@chakra-ui/icons";
 import { Goal, useFutarchy } from "@/context/FutarchyContext";
 import dayjs from "dayjs";
 import { GoalStatusBadge } from "@/components/GoalStatusBadge";
@@ -78,8 +80,11 @@ export const GoalSummary = ({ goal }: GoalSummaryProps) => {
           </Text>
         )}
       </HStack>
-      <Heading as="h5" size="xs" mt={3}>
-        Goal achievement
+      <Heading as="h5" size="xs" mt={3} style={{display: "flex", alignItems: "center"}}>
+        Resolution date
+        <Tooltip label='Date by which the objective must be achieved' fontSize='sm'>
+          <InfoIcon ml={2}/>
+        </Tooltip>
       </Heading>
       <Text fontSize="md">
         {!goalMaturityDate ? (

@@ -4,7 +4,8 @@ import {
   ProposalStatus,
   useFutarchy,
 } from "@/context/FutarchyContext";
-import { Heading, Link, Text } from "@chakra-ui/react";
+import { Heading, Link, Text, Tooltip } from "@chakra-ui/react";
+import {InfoIcon} from "@chakra-ui/icons";
 import dayjs from "dayjs";
 
 interface ProposalCardProps {
@@ -52,8 +53,11 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
       <Text fontSize="md">
         {proposal.title}
       </Text>
-      <Heading as="h5" size="xs" mt={3}>
+      <Heading as="h5" size="xs" mt={3} style={{display: "flex", alignItems: "center"}}>
         Trading until
+        <Tooltip label='Date on which the trading phase ended. On this date, if the YES wins, the proposal is adopted' fontSize='sm'>
+          <InfoIcon ml={2}/>
+        </Tooltip>
       </Heading>
       <Text fontSize="md">
         {!tradingEndDate ? (
