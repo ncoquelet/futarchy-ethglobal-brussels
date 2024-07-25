@@ -8,8 +8,13 @@ const { ACCOUNT0, ALCHEMY_SEPOLIA_RPC_URL, ALCHEMY_KEY, ETHERSCAN_API_KEY } =
 const networks: any = {}
 if (process.env.HARDHAT_ENV === 'production') {
   networks['sepolia'] = {
-    url: (ALCHEMY_SEPOLIA_RPC_URL as string) + ALCHEMY_KEY,
+    url: ALCHEMY_SEPOLIA_RPC_URL,
     chainId: 11155111,
+    accounts: [ACCOUNT0 as string],
+  }
+  networks['kakarot'] = {
+    url: 'https://sepolia-rpc.kakarot.org',
+    chainId: 1802203764,
     accounts: [ACCOUNT0 as string],
   }
 }

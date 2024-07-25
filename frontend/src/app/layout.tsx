@@ -8,7 +8,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // Wagmi & RainbowKit
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
-import { hardhat, polygonMumbai, sepolia } from "@wagmi/core/chains";
+import { hardhat, sepolia } from "@wagmi/core/chains";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -50,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { chains, publicClient } = configureChains(
-    [sepolia, hardhat, polygonMumbai],
+    [sepolia, hardhat],
     [
       // alchemyProvider({
       //   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,

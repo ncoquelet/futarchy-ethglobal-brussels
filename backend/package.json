@@ -25,6 +25,8 @@
     "coverage": "npx hardhat coverage",
     "node": "npx hardhat node",
     "journey": "npx hardhat run scripts/run-journey.ts --network localhost",
+    "journey:sepolia": "HARDHAT_ENV=production npx hardhat run scripts/run-journey.ts --network sepolia",
+    "journey:kakarot": "HARDHAT_ENV=production npx hardhat run scripts/run-journey.ts --network kakarot",
     "deploy:local": "npx hardhat run scripts/deploy.ts --network localhost",
     "deploy:sepolia": "HARDHAT_ENV=production npx hardhat run scripts/deploy.ts --network sepolia",
     "deploy:mumbai": "npx hardhat run scripts/deploy.ts --network mumbai",

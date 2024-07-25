@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { Address, parseAbiItem } from "viem";
-import { GOVERNANCE_CONTRACT_ADDRESS } from "@/app/config";
+import { FROM_BLOCK, GOVERNANCE_CONTRACT_ADDRESS } from "@/app/config";
 
 // Abis
 import { ToastType } from "@/components/ToastGpt";
@@ -147,7 +147,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
       const logs = await publicClient.getLogs({
         address: contractAddress,
         event: parseAbiItem("event GoalAdded(uint _goalId, address _addr)"),
-        fromBlock: BigInt(Number(0)),
+        fromBlock: BigInt(Number(FROM_BLOCK)),
       });
 
       const goals = await Promise.all(
