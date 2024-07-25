@@ -84,7 +84,7 @@ contract FutarchyGoal is Ownable {
   function endProposalVoting() external onlyOwner timeStillRunning(votingDeadline) {
     bool isAccepted = FutarchyProposal(proposals[currentProposal]).endVoting();
     if (!isAccepted) {
-      if (proposals.length > currentProposal) {
+      if (proposals.length > currentProposal + 1) {
         currentProposal++;
         startTime = block.timestamp;
         FutarchyProposal(proposals[currentProposal]).startVoting();

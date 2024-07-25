@@ -4,7 +4,7 @@ import {
   ProposalStatus,
   useFutarchy,
 } from "@/context/FutarchyContext";
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, Link, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 interface ProposalCardProps {
@@ -13,7 +13,7 @@ interface ProposalCardProps {
 }
 
 export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
-  const { buyYes, buyNo } = useFutarchy();
+  const { buyYes, buyNo, endProposalVoting } = useFutarchy();
 
   const total = Number(proposal.balanceYes + proposal.balanceNo);
   const yesPercent =
@@ -33,6 +33,10 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
     if (proposal.status) buyYes(proposal.addr, 1);
   };
 
+  const closeTrading = () => {
+    endProposalVoting(goal.addr);
+  };
+
   const tradingEndDate = goal.startTime
     ? dayjs.unix(goal.startTime).add(goal.votingDeadline, "second")
     : undefined;
@@ -46,14 +50,28 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
         Trading until
       </Heading>
       <Text fontSize="md">
-        {tradingEndDate ? tradingEndDate.format("YYYY-MM-DD") : "pending"}
+        {!tradingEndDate ? (
+          "pending"
+        ) : (
+          <>
+            {tradingEndDate.format("YYYY-MM-DD")}
+            <Link
+              ml={4}
+              color="teal.500"
+              href="#"
+              onClick={() => closeTrading()}
+            >
+              force close
+            </Link>
+          </>
+        )}
       </Text>
       <div style={{ display: "flex", marginTop: "1rem" }}>
         <div
           style={{
             width: "50%",
             borderRadius: "10px",
-            backgroundColor: "#8DF69D",
+            backgroundColor: tradingOpen ? "#8DF69D" : "#CCC",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -62,6 +80,7 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
             minHeight: "10rem",
             cursor: "pointer",
             pointerEvents: tradingOpen ? "auto" : "none",
+            opacity: tradingOpen ? 1 : 0.5,
           }}
           onClick={() => buyYesHandler()}
         >
@@ -82,7 +101,7 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
           style={{
             width: "50%",
             borderRadius: "10px",
-            backgroundColor: "#FCCCCC",
+            backgroundColor: tradingOpen ? "#FCCCCC" : "#CCC",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -90,8 +109,10 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
             marginLeft: "0.3rem",
             minHeight: "10rem",
             cursor: "pointer",
+            pointerEvents: tradingOpen ? "auto" : "none",
+            opacity: tradingOpen ? 1 : 0.5,
           }}
-          onClick={() => buyNo(proposal.addr, 1)}
+          onClick={() => buyNoHandler()}
         >
           <div>
             <svg
