@@ -87,7 +87,7 @@ export default function GoalForm() {
             <FormLabel>Proposal</FormLabel>
             <Textarea
               name="proposal"
-              defaultValue="Partnering with artists to bring out a new line of our best seller product."
+              defaultValue="Partnering with artists to launch a new line of our best-selling product."
             />
           </FormControl>
 
