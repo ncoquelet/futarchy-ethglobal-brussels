@@ -56,7 +56,7 @@ export type Goal = {
   externalLink: string;
   votingDeadline: number;
   proposals: Proposal[];
-  currentProposal: Address;
+  currentProposal: number;
   goalMaturity: number;
   goalValue: number;
   startTime: number;
@@ -69,7 +69,7 @@ type ContractGoal = {
   goalMaturity: bigint;
   goalValue: bigint;
   votingDeadline: bigint;
-  currentProposal: Address;
+  currentProposal: bigint;
   startTime: bigint;
 };
 
@@ -91,6 +91,14 @@ export const ProposalStatus = {
   VoteAccepted: 3,
   VoteClosed: 4,
 };
+
+export const ProposalStatusLabel = [
+  "PENDING",
+  "TRADING",
+  "CANCELLED",
+  "Accepted",
+  "Closed",
+];
 
 type ContractProposal = {
   addr: Address;
@@ -200,6 +208,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             rules: goalMetadata.rules,
             externalLink: goalMetadata.externalLink,
             proposals: proposals,
+            currentProposal: Number(goal.currentProposal),
             goalValue: Number(goal.goalValue),
             votingDeadline: Number(goal.votingDeadline),
             goalMaturity: Number(goal.goalMaturity),

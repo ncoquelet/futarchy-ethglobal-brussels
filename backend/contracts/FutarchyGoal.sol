@@ -24,7 +24,7 @@ contract FutarchyGoal is Ownable {
     uint goalMaturity;
     uint goalValue;
     uint votingDeadline;
-    address currentProposal;
+    uint currentProposal;
     uint startTime;
   }
 
@@ -73,9 +73,7 @@ contract FutarchyGoal is Ownable {
     goal.goalMaturity = goalMaturity;
     goal.goalValue = goalValue;
     goal.votingDeadline = votingDeadline;
-    if (proposals.length > 0) {
-      goal.currentProposal = proposals[currentProposal];
-    }
+    goal.currentProposal = currentProposal;
     goal.startTime = startTime;
     return goal;
   }

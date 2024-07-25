@@ -30,7 +30,7 @@ export const ProposalCard = ({ goal, proposal }: ProposalCardProps) => {
 
   const buyNoHandler = () => {
     if (proposal.status != ProposalStatus.VoteStarted) return;
-    if (proposal.status) buyYes(proposal.addr, 1);
+    if (proposal.status) buyNo(proposal.addr, 1);
   };
 
   const closeTrading = () => {

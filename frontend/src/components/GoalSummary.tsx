@@ -1,6 +1,7 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { Goal } from "@/context/FutarchyContext";
 import dayjs from "dayjs";
+import { GoalStatusBadge } from "@/components/GoalStatusBadge";
 
 type GoalSummaryProps = {
   goal: Goal;
@@ -20,6 +21,10 @@ export const GoalSummary = ({ goal }: GoalSummaryProps) => {
         Informations
       </Heading>
       <Heading as="h5" size="xs">
+        Status
+      </Heading>
+      <GoalStatusBadge goal={goal} />
+      <Heading as="h5" size="xs" mt={3}>
         Goal value
       </Heading>
       <Text fontSize="md">+{goal.goalValue}%</Text>
