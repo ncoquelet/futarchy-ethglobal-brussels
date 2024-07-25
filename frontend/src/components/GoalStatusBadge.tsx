@@ -1,5 +1,6 @@
 import {
   Goal,
+  Proposal,
   ProposalStatus,
   ProposalStatusLabel,
 } from "@/context/FutarchyContext";
@@ -11,16 +12,16 @@ interface GoalStatusBadgeProps {
 
 export const GoalStatusBadge = ({ goal }: GoalStatusBadgeProps) => {
   const proposal = goal.proposals[goal.currentProposal];
-  const badgeColor = (status: number): string => {
-    switch (status) {
+  const badgeColor = (proposal: Proposal): string => {
+    switch (proposal.status) {
       case ProposalStatus.VoteStarted:
         return "blue";
       case ProposalStatus.VoteCancelled:
-        return "red";
+        return "orange";
       case ProposalStatus.VoteAccepted:
-        return "green";
-      case ProposalStatus.VoteClosed:
         return "purple";
+      case ProposalStatus.VoteClosed:
+        return proposal.goalAchieved ? "green" : "red";
       case ProposalStatus.Waiting:
       default:
         return "gray";
@@ -28,7 +29,7 @@ export const GoalStatusBadge = ({ goal }: GoalStatusBadgeProps) => {
   };
 
   return (
-    <Badge colorScheme={badgeColor(proposal.status)}>
+    <Badge colorScheme={badgeColor(proposal)}>
       {ProposalStatusLabel[proposal.status]}
     </Badge>
   );

@@ -16,6 +16,7 @@ import { waitForTransaction, writeContract } from "wagmi/actions";
 import { abi as goalAbi } from "../abi/FutarchyGoal.json";
 import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
 import { abi as proposalAbi } from "../abi/FutarchyProposal.json";
+import { abi as oracleAbi } from "../abi/FutarchyOracle.json";
 import { useNotification } from "./NotificationContext";
 
 type FutarchyContextProps = {
@@ -30,10 +31,11 @@ type FutarchyContextProps = {
     goalMaturity: bigint,
   ): Promise<void>;
   createProposal(cid: string): Promise<void>;
-  buyYes(proposal: Address, quantity: number): void;
-  buyNo(proposal: Address, quantity: number): void;
-  endProposalVoting(proposal: Address): void;
-  goalAchieved(proposal: Address, quantity: number): void;
+  buyYes(proposal: Address, quantity: number): Promise<void>;
+  buyNo(proposal: Address, quantity: number): Promise<void>;
+  endProposalVoting(proposal: Address): Promise<void>;
+  goalAchieved(goal: Address): Promise<void>;
+  fakeOracle(goal: Address, value: number): Promise<void>;
 };
 
 const FutarchyContext = createContext<FutarchyContextProps>({
@@ -42,14 +44,16 @@ const FutarchyContext = createContext<FutarchyContextProps>({
   goals: [],
   createGoal: async () => new Promise(() => {}),
   createProposal: async () => new Promise(() => {}),
-  buyYes: () => {},
-  buyNo: () => {},
-  endProposalVoting: () => {},
-  goalAchieved: () => {},
+  buyYes: async () => new Promise(() => {}),
+  buyNo: async () => new Promise(() => {}),
+  endProposalVoting: async () => new Promise(() => {}),
+  goalAchieved: async () => new Promise(() => {}),
+  fakeOracle: async () => new Promise(() => {}),
 });
 
 export type Goal = {
   addr: Address;
+  oracle: Address;
   title: string;
   overview: string;
   rules: string;
@@ -59,15 +63,18 @@ export type Goal = {
   currentProposal: number;
   goalMaturity: number;
   goalValue: number;
+  maturityValue: number;
   startTime: number;
 };
 
 type ContractGoal = {
   addr: Address;
+  oracle: Address;
   remoteCid: string;
   proposals: Address[];
   goalMaturity: bigint;
   goalValue: bigint;
+  maturityValue: bigint;
   votingDeadline: bigint;
   currentProposal: bigint;
   startTime: bigint;
@@ -212,6 +219,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
             goalValue: Number(goal.goalValue),
             votingDeadline: Number(goal.votingDeadline),
             goalMaturity: Number(goal.goalMaturity),
+            maturityValue: Number(goal.maturityValue),
             startTime: Number(goal.startTime),
           } as Goal;
         }),
@@ -332,6 +340,23 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const fakeOracle = async (oracle: Address, value: number) => {
+    try {
+      const { hash } = await writeContract({
+        address: oracle,
+        abi: oracleAbi,
+        functionName: "updateResult",
+        args: [BigInt(value)],
+      });
+
+      await waitForTransaction({ hash });
+      showNotification("Success", ToastType.SUCCESS);
+    } catch (error) {
+      showNotification("Error occured in console", ToastType.ERROR);
+      console.log(error);
+    }
+  };
+
   return (
     <FutarchyContext.Provider
       value={{
@@ -344,6 +369,7 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
         buyNo,
         endProposalVoting,
         goalAchieved,
+        fakeOracle,
       }}
     >
       {children}

@@ -14,16 +14,19 @@ contract FutarchyGoal is Ownable {
   uint public startTime;
   uint public goalMaturity;
   uint public goalValue;
+  uint public maturityValue;
   uint public votingDeadline;
   bool public demo;
 
   struct Goal {
     address addr;
+    address oracle;
     string remoteCid;
     address[] proposals;
     uint goalMaturity;
     uint goalValue;
     uint votingDeadline;
+    uint maturityValue;
     uint currentProposal;
     uint startTime;
   }
@@ -68,12 +71,14 @@ contract FutarchyGoal is Ownable {
   function getGoal() public view returns (Goal memory) {
     Goal memory goal;
     goal.addr = address(this);
+    goal.oracle = oracle;
     goal.remoteCid = remoteCid;
     goal.proposals = proposals;
     goal.goalMaturity = goalMaturity;
     goal.goalValue = goalValue;
     goal.votingDeadline = votingDeadline;
     goal.currentProposal = currentProposal;
+    goal.maturityValue = maturityValue;
     goal.startTime = startTime;
     return goal;
   }
@@ -91,7 +96,7 @@ contract FutarchyGoal is Ownable {
   }
 
   function goalAchieved() external timeStillRunning(goalMaturity) {
-    bool result = FutarchyOracle(oracle).getResult() >= goalValue;
-    FutarchyProposal(proposals[currentProposal]).tallyGoal(result);
+    maturityValue = FutarchyOracle(oracle).getResult();
+    FutarchyProposal(proposals[currentProposal]).tallyGoal(maturityValue >= goalValue);
   }
 }
