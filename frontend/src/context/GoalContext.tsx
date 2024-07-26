@@ -11,7 +11,7 @@ import { FROM_BLOCK, GOVERNANCE_CONTRACT_ADDRESS } from "@/app/config";
 
 // Abis
 import { ToastType } from "@/components/ToastGpt";
-import { useAccount, usePublicClient, useReadContract } from "wagmi";
+import { usePublicClient } from "wagmi";
 import { waitForTransaction, writeContract } from "wagmi/actions";
 import { abi as goalAbi } from "../abi/FutarchyGoal.json";
 import { abi as governanceAbi } from "../abi/FutarchyGovernance.json";
@@ -19,10 +19,8 @@ import { abi as proposalAbi } from "../abi/FutarchyProposal.json";
 import { abi as oracleAbi } from "../abi/FutarchyOracle.json";
 import { useNotification } from "./NotificationContext";
 
-type FutarchyContextProps = {
-  contractAddress: Address;
-  isOwner: boolean;
-  goals: Array<Goal>;
+type GoalContextProps = {
+  currentGoal: Goal | undefined;
   createGoal(
     cid: string,
     pcid: string,
@@ -30,22 +28,14 @@ type FutarchyContextProps = {
     votingDeadline: bigint,
     goalMaturity: bigint,
   ): Promise<void>;
-  createProposal(cid: string): Promise<void>;
-  buyYes(proposal: Address, quantity: number): Promise<void>;
-  buyNo(proposal: Address, quantity: number): Promise<void>;
   endProposalVoting(proposal: Address): Promise<void>;
   goalAchieved(goal: Address): Promise<void>;
   fakeOracle(goal: Address, value: number): Promise<void>;
 };
 
-const FutarchyContext = createContext<FutarchyContextProps>({
-  contractAddress: "0x" as Address,
-  isOwner: false,
-  goals: [],
+const GoalContext = createContext<GoalContextProps>({
+  currentGoal: undefined,
   createGoal: async () => new Promise(() => {}),
-  createProposal: async () => new Promise(() => {}),
-  buyYes: async () => new Promise(() => {}),
-  buyNo: async () => new Promise(() => {}),
   endProposalVoting: async () => new Promise(() => {}),
   goalAchieved: async () => new Promise(() => {}),
   fakeOracle: async () => new Promise(() => {}),
@@ -116,32 +106,18 @@ type ContractProposal = {
   goalAchieved: boolean;
 };
 
-export const FutarchyProvider = ({ children }: PropsWithChildren) => {
+export const GoalProvider = ({ children }: PropsWithChildren) => {
   const contractAddress = GOVERNANCE_CONTRACT_ADDRESS as Address;
   console.log(`layout contractAddress ${contractAddress}`);
   const searchParams = useSearchParams();
   const goalAddress = searchParams.get("goalAddress");
-
-  const goalContractConfig = {};
 
   // connection
   const publicClient = usePublicClient();
 
   const { showNotification } = useNotification();
 
-  // Current wallet address
-  const { address } = useAccount();
-
-  // Current wallet address
-  const { data: owner, isLoading: isLoadingOwner } = useReadContract({
-    address: contractAddress as Address,
-    abi: governanceAbi,
-    functionName: "owner",
-  });
-
-  const isOwner = address! && address === owner; // Is the current user the owner of the contract ?
-
-  const [goals, setGoals] = useState<Array<Goal>>([]);
+  const [goal, setGoal] = useState<Goal | undefined>(undefined);
 
   useEffect(() => {
     const fetchGoals = async () => {
@@ -308,40 +284,6 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const buyYes = async (proposal: Address, quantity: number) => {
-    try {
-      const { hash } = await writeContract({
-        address: proposal,
-        abi: proposalAbi,
-        functionName: "buyYes",
-        value: BigInt(quantity),
-      });
-
-      await waitForTransaction({ hash });
-      showNotification("Success", ToastType.SUCCESS);
-    } catch (error) {
-      showNotification("Error occured in console", ToastType.ERROR);
-      console.log(error);
-    }
-  };
-
-  const buyNo = async (proposal: Address, quantity: number) => {
-    try {
-      const { hash } = await writeContract({
-        address: proposal,
-        abi: proposalAbi,
-        functionName: "buyNo",
-        value: BigInt(quantity),
-      });
-
-      await waitForTransaction({ hash });
-      showNotification("Success", ToastType.SUCCESS);
-    } catch (error) {
-      showNotification("Error occured in console", ToastType.ERROR);
-      console.log(error);
-    }
-  };
-
   const fakeOracle = async (oracle: Address, value: number) => {
     try {
       const { hash } = await writeContract({
@@ -360,25 +302,19 @@ export const FutarchyProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <FutarchyContext.Provider
+    <GoalContext.Provider
       value={{
-        contractAddress,
-        isOwner,
-        goals,
         createGoal,
-        createProposal,
-        buyYes,
-        buyNo,
         endProposalVoting,
         goalAchieved,
         fakeOracle,
       }}
     >
       {children}
-    </FutarchyContext.Provider>
+    </GoalContext.Provider>
   );
 };
 
-export function useFutarchy() {
-  return useContext(FutarchyContext);
+export function useGoal() {
+  return useContext(GoalContext);
 }

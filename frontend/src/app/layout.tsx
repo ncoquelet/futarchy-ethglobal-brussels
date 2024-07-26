@@ -6,11 +6,10 @@ import { Inter } from "next/font/google";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 // Wagmi & RainbowKit
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
-import { hardhat, sepolia } from "@wagmi/core/chains";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
+import { hardhat, kakarotSepolia, sepolia } from "@wagmi/core/chains";
+import { createConfig, http, WagmiProvider } from "wagmi";
 
 // Styles
 import { CacheProvider } from "@chakra-ui/next-js";
@@ -20,6 +19,8 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { FutarchyProvider } from "@/context/FutarchyContext";
 import NotificationProvider from "@/context/NotificationContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { PropsWithChildren } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 const timeZone = "Europe/Paris";
@@ -44,55 +45,48 @@ const theme = extendTheme({
   },
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { chains, publicClient } = configureChains(
-    [sepolia, hardhat],
-    [
-      // alchemyProvider({
-      //   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
-      // }),
-      publicProvider(),
-    ],
-  );
+const queryClient = new QueryClient();
 
-  const { connectors } = getDefaultWallets({
+export default function RootLayout({ children }: PropsWithChildren) {
+  const { connectors } = getDefaultConfig({
     appName: "FlutarchETH",
     projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_KEY as string,
-    chains,
+    chains: [hardhat, kakarotSepolia, sepolia],
   });
 
   const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient,
+    chains: [hardhat, kakarotSepolia, sepolia],
+    transports: {
+      [hardhat.id]: http(),
+      [kakarotSepolia.id]: http(),
+      [sepolia.id]: http(),
+    },
   });
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="">
-          <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider chains={chains} modalSize="compact">
-              <CacheProvider>
-                <ChakraProvider
-                  theme={theme}
-                  toastOptions={{ defaultOptions: { isClosable: true } }}
-                >
-                  <NextIntlClientProvider locale="en" timeZone={timeZone}>
-                    <NotificationProvider>
-                      <FutarchyProvider>
-                        <main>{children}</main>
-                      </FutarchyProvider>
-                    </NotificationProvider>
-                  </NextIntlClientProvider>
-                </ChakraProvider>
-              </CacheProvider>
-            </RainbowKitProvider>
-          </WagmiConfig>
+          <WagmiProvider config={wagmiConfig}>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitProvider modalSize="compact">
+                <CacheProvider>
+                  <ChakraProvider
+                    theme={theme}
+                    toastOptions={{ defaultOptions: { isClosable: true } }}
+                  >
+                    <NextIntlClientProvider locale="en" timeZone={timeZone}>
+                      <NotificationProvider>
+                        <FutarchyProvider>
+                          <main>{children}</main>
+                        </FutarchyProvider>
+                      </NotificationProvider>
+                    </NextIntlClientProvider>
+                  </ChakraProvider>
+                </CacheProvider>
+              </RainbowKitProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
         </div>
       </body>
     </html>
